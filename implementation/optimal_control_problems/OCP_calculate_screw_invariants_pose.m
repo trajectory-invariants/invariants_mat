@@ -126,6 +126,7 @@ classdef OCP_calculate_screw_invariants_pose < handle
                 T_obj_m_k = T_obj_m{k};
                 e_position = T_obj_k(1:3,4) - T_obj_m_k(1:3,4); % position error
                 e_rotation = T_obj_m_k(1:3,1:3)'*T_obj_k(1:3,1:3) - eye(3); % rotation error
+%                 e_rotation = [e_rotation(1,2);e_rotation(1,3);e_rotation(2,3)];
                 e_rotation = vec(triu(e_rotation));
                 objective_fit_position = objective_fit_position + dot(e_position,e_position);
                 objective_fit_orientation = objective_fit_orientation + dot(e_rotation,e_rotation); % apply weighting to error
@@ -145,7 +146,7 @@ classdef OCP_calculate_screw_invariants_pose < handle
 
             %% Define solver
             opti.minimize(objective);
-            opti.solver('ipopt',struct('print_time',1),struct('max_iter',max_iters,'tol',10e-8,'print_level',1));
+            opti.solver('ipopt',struct('print_time',1,'expand',true),struct('max_iter',max_iters,'tol',10e-8,'print_level',1));
 
             %% Save window variables
             obj.X.T_obj = T_obj;
@@ -169,7 +170,7 @@ classdef OCP_calculate_screw_invariants_pose < handle
             %obj.flag_first_time = 0;
         end
 
-        function optim_result = calculate_invariants(obj,meas_poses,stepsize)
+        function optim_result = calculate_invariants(obj,meas_poses,stepsize,parameters)
 
             %import casadi.*
 
@@ -179,7 +180,7 @@ classdef OCP_calculate_screw_invariants_pose < handle
 
             % Estimate initial screw twist using a finite differences approach
             twist_init = calculate_screwtwist_from_discrete_poses(measured_orientation,measured_position',stepsize);
-            [invariants_init, ISA_frame_init] = initialize_invariants_screw(twist_init,obj.param_positive_obj_invariant);
+            [invariants_init, ISA_frame_init] = initialize_invariants_screw(twist_init,obj.param_positive_obj_invariant,parameters);
 
             % Initialize states
             for k=1:N

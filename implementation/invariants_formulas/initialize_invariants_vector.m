@@ -28,7 +28,9 @@ end
 % Select a segment of the trajectory containing sufficient trajectory information
 % and where the mean is well-defined
 %(four this contour, 3/4 of the trajectory is selected)
-mean_vector = sum(vector_trajectory(1:end-round(N/4),:),1)*3/N;
+% mean_vector = sum(vector_trajectory(1:end-round(N/4),:),1)*3/N;
+% mean_vector = sum(vector_trajectory(1:end,:),1)/(3/4*N);
+mean_vector = sum(vector_trajectory(round(N/3):end,:),1)/(2/3*N);
 if dot(e_x,mean_vector) < 0
     e_x = -e_x;
 end

@@ -4,3 +4,5 @@
 *.svg
 *.fig
 *.pdf
+output/*.mat
+/implementation/invariants_formulas/*.lnk

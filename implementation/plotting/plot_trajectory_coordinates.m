@@ -2,7 +2,7 @@ function plot_trajectory_coordinates(progress,data,descriptor_type,title_text,pa
 % This function can plot many types of descriptors as listed in the following,
 % descriptor_type:
 % dim = 3
-%     rotation
+%     orientation
 %     position
 %     force
 %     moment
@@ -16,7 +16,7 @@ ylabel_fontsize = 20;
 sgtitle_fontsize = 20;
 
 %% Location of the figure
-if strcmp(descriptor_type,'rotation') || ...
+if strcmp(descriptor_type,'orientation') || ...
         strcmp(descriptor_type,'position') || ...
         strcmp(descriptor_type,'force') || ...
         strcmp(descriptor_type,'moment')
@@ -31,11 +31,11 @@ dim = size(data,2);
 
 %% Plot
 if dim == 3
-    % rotation
+    % orientation
     % position
     % force
     % moment
-    if strcmp(descriptor_type,'rotation') || ...
+    if strcmp(descriptor_type,'orientation') || ...
             strcmp(descriptor_type,'position') || ...
             strcmp(descriptor_type,'force') || ...
             strcmp(descriptor_type,'moment')
@@ -57,6 +57,7 @@ elseif dim == 6
             subplot(2,3,idx)
             plot(progress,data(:,idx))
             set(gca,'YGrid','on')
+            set(groot,'defaultAxesTickLabelInterpreter','latex');
             ax = gca; ax.XAxis.FontSize = 12; ax.YAxis.FontSize = 12;
             hold on
         end
@@ -66,8 +67,8 @@ end
 sgtitle(title_text,'Interpreter','Latex','fontsize',sgtitle_fontsize)
 
 %% Labels
-% rotation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if strcmp(descriptor_type,'rotation')
+% orientation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+if strcmp(descriptor_type,'orientation')
     if  strcmp(parameterization,'time_based')
         % roll
         subplot(1,3,1)

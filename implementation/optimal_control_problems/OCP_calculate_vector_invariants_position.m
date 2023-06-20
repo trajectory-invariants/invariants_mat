@@ -112,7 +112,7 @@ classdef OCP_calculate_vector_invariants_position < handle
                 objective_fit = objective_fit + dot(e_position,e_position); % apply weighting to error
             end
             opti.subject_to(objective_fit/window_length/(rms_error_traj^2) < 1);
-
+            
             % Regularization constraints to deal with singularities and noise
             objective_reg = 0;
             for k=1:window_length-1
@@ -126,7 +126,7 @@ classdef OCP_calculate_vector_invariants_position < handle
 
             %% Define solver
             opti.minimize(objective);
-            opti.solver('ipopt',struct('print_time',1),struct('max_iter',max_iters,'tol',1e-10,'print_level',0));
+            opti.solver('ipopt',struct('print_time',1),struct('max_iter',max_iters,'tol',1e-6,'print_level',5));
 
             %% Save variables
             obj.X.R_FS = R_FS;
@@ -148,14 +148,16 @@ classdef OCP_calculate_vector_invariants_position < handle
             %obj.flag_first_time = 0;
         end
 
-        function optimization_result = calculate_invariants(obj,measured_position,stepsize)
+        function optimization_result = calculate_invariants(obj,measured_position,stepsize, invariants_init, FS_init)
             %% Initialization of invariants and FS frames
 
             N = obj.window_length;
-
-            twist_init = calculate_posetwist_from_discrete_poses(zeros(3,3,N)+eye(3),measured_position',stepsize);
+            Identity = zeros(3,3,N);
+            for k = 1:N
+                Identity(:,:,k) = eye(3);
+            end
+            twist_init = calculate_posetwist_from_discrete_poses(Identity,measured_position',stepsize);
             [invariants_init, FS_init] = initialize_invariants_vector(twist_init(:,4:6),obj.param_positive_obj_invariant);
-
             %% Set variables
 
             % Initialize states + controls

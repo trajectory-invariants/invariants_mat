@@ -68,7 +68,7 @@ classdef OCP_calculate_screw_invariants_wrench < handle
             end
 
             % System controls U (unknown invariants at every time step)
-            U = opti.variable(6,window_length-1);
+            U = opti.variable(6,window_length);
 
             % System parameters P (known values that need to be set right before solving)
             %T_isa_0 = opti.parameter(3,4); % initial ISA frame at first sample of window
@@ -106,7 +106,7 @@ classdef OCP_calculate_screw_invariants_wrench < handle
             % t_w : twist of object expressed in world
             % t_isa : twist of object expressed in isa (using invariants omega1 / v1)
             % constraint : t_w - S_w_isa * t_isa == 0 % with S_w_isa, the screw transformation matrix to transform twist from isa to world
-            for k=1:window_length-1
+            for k=1:window_length
                 opti.subject_to([omega_obj{k};v_obj{k}] - transform_screw(T_isa{k},[U(1,k);0;0;U(4,k);0;0]) == 0);
                 %opti.subject_to(transform_screw(inverse_pose(T_isa{k}),[omega_obj{k};v_obj{k}]) - [U(1,k);0;0;U(4,k);0;0] == 0);
             end
@@ -118,7 +118,7 @@ classdef OCP_calculate_screw_invariants_wrench < handle
             if param_positive_mov_invariant
                 opti.subject_to(U(2,:)>=0); % lower bounds on control
             end
-            opti.subject_to(U(2,end) == U(2,end-1)); % Last sample has no impact on RMS error
+            % opti.subject_to(U(2,end) == U(2,end-1)); % Last sample has no impact on RMS error
 
             % Hinge motion constraint
             % slower convergence, move constraint to initialization
@@ -146,14 +146,20 @@ classdef OCP_calculate_screw_invariants_wrench < handle
 
             % Regularization constraints to deal with singularities and noise
             objective_reg = 0;
-            for k=1:window_length-1
+            for k=1:window_length
                 e_regul_abs = U([2 3 5 6],k); % absolute value invariants (force arbitrary invariants to zero)
                 objective_reg = objective_reg + e_regul_abs(1)^2 + e_regul_abs(2)^2 + ...
                     1/characteristic_length^2*(e_regul_abs(3)^2 + e_regul_abs(4)^2);
             end
-
-            objective = objective_reg/(window_length-1);
-
+            objective = objective_reg/(window_length);
+            
+%             objective_ISA_location = 0;
+%             for k=1:window_length
+%                 objective_ISA_location = objective_ISA_location + dot(T_isa{k}(1:3,4),T_isa{k}(1:3,4));
+%             end
+%             objective_ISA_location = objective_ISA_location/(window_length);
+%             objective = objective + 10^(-6)*objective_ISA_location;
+            
             %% Define solver
             opti.minimize(objective);
             opti.solver('ipopt',struct('print_time',1),struct('max_iter',max_iters,'tol',10e-10,'print_level',1));
@@ -179,11 +185,11 @@ classdef OCP_calculate_screw_invariants_wrench < handle
             %obj.flag_first_time = 0;
         end
 
-        function optim_result = calculate_invariants(obj,meas_twist,stepsize)
+        function optim_result = calculate_invariants(obj,meas_twist,stepsize,parameters)
 
             N = obj.window_length;
 
-            [invariants_init, ISA_frame_init] = initialize_invariants_screw(meas_twist,obj.param_positive_obj_invariant);
+            [invariants_init, ISA_frame_init] = initialize_invariants_screw(meas_twist,obj.param_positive_obj_invariant,parameters);
 
             measured_twist_rotation = meas_twist(:,1:3);
             measured_twist_translation = meas_twist(:,4:6);
@@ -237,7 +243,7 @@ classdef OCP_calculate_screw_invariants_wrench < handle
             optim_result.Obj_rotation = solution.value([obj.X.omega_obj{:}])';
             optim_result.Obj_translation = solution.value([obj.X.v_obj{:}])';
             optim_result.invariants = solution.value(obj.U)';
-            optim_result.invariants = [optim_result.invariants ; optim_result.invariants(end,:)];
+            optim_result.invariants = optim_result.invariants;
             %             if strcmp(obj.parameterization,'geometric')
             %                 optim_result.L = sol.value(obj.L);
             %                 optim_result.Theta = sol.value(obj.Theta);

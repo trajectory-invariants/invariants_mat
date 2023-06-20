@@ -10,6 +10,8 @@ classdef OCP_calculate_vector_invariants_position_old < handle
         O; % evaluation of the objective
         window_length; % window size
         param_signed_invariants;
+        param_positive_obj_invariant;
+        param_positive_mov_invariant;
         %h; % period between samples
         parameterization;
         %sol; % previous solution
@@ -29,6 +31,8 @@ classdef OCP_calculate_vector_invariants_position_old < handle
             max_iters = initialize_parameter(parameters,'max_iters',500); % maximum number of iterations
             window_length = parameters.window.window_length; % window size
             param_signed_invariants = parameters.signed_invariants;
+            param_positive_obj_invariant = parameters.positive_obj_invariant;
+            param_positive_mov_invariant = parameters.positive_mov_invariant;
             parameterization = initialize_parameter(parameters,'parameterization','geometric'); % timebased or geometric
 
             % Weighting factors used in objective function
@@ -180,6 +184,8 @@ classdef OCP_calculate_vector_invariants_position_old < handle
             obj.window_length = window_length;
             obj.P.h = h;
             obj.opti = opti;
+            obj.param_positive_obj_invariant = param_positive_obj_invariant;
+            obj.param_positive_mov_invariant = param_positive_mov_invariant;
             obj.param_signed_invariants = param_signed_invariants;
             obj.O.objective = objective;
             obj.O.objective_fit = objective_fit;
@@ -187,7 +193,7 @@ classdef OCP_calculate_vector_invariants_position_old < handle
             %obj.flag_first_time = 0;
         end
 
-        function optimization_result = calculate_invariants(obj,measured_position,stepsize)
+        function optimization_result = calculate_invariants(obj,measured_position,stepsize, invariants_init, FSt_init)
             %% Initialization of invariants and FS frames
 
             N = obj.window_length;
@@ -196,64 +202,66 @@ classdef OCP_calculate_vector_invariants_position_old < handle
             %             meas_T.Obj_location = measured_position;
             %measured_position = meas_traj.Obj_location;
 
-            bool_asa = 1;
-            if bool_asa
-
-                parameters.signed_invariants = obj.param_signed_invariants; % optional arguments
-                twist_init = calculate_posetwist_from_discrete_poses(zeros(3,3,N)+eye(3),measured_position',stepsize);
-                twist_init = smoothdata(twist_init,'gaussian',40); % ENSURE A SMOOTH INITIALISATION => AVOID INITIALISATIONS WITH FRAMEFLIPS
-                twist_init = [twist_init(:,4:6) twist_init(:,1:3)];
-
-                ASA = calculate_ASA_pose(twist_init(1:round(N),:));
-                parameters.direction_vector_x = ASA(1:3,1);
-                parameters.direction_vector_y = cross(twist_init(1,1:3)',twist_init(round(1*N/10),1:3)');
-                [FSt_init,invariants_init] = calculate_screw_invariants_from_discrete_twist(twist_init,stepsize,parameters);
-
-                figure; plot(invariants_init(:,2))
-                invariants_init = invariants_init+1e-12;
-
-                %                 twist_init = calculate_posetwist_from_discrete_poses(meas_T,stepsize);
-                %                 twist_init = [twist_init(:,4:6) twist_init(:,1:3)];
-                %                 init_vel = vecnorm(twist_init(:,1:3),2,2);
-                %                 start_ind = round(1,0);
-                %                 end_ind = round(N,0);
 
 
+            %             bool_asa = 1;
+            %             if bool_asa
+            %
+            %                 parameters.signed_invariants = obj.param_signed_invariants; % optional arguments
+            %                 twist_init = calculate_posetwist_from_discrete_poses(zeros(3,3,N)+eye(3),measured_position',stepsize);
+            %                 twist_init = smoothdata(twist_init,'gaussian',40); % ENSURE A SMOOTH INITIALISATION => AVOID INITIALISATIONS WITH FRAMEFLIPS
+            %                 twist_init = [twist_init(:,4:6) twist_init(:,1:3)];
+            %
+            %                 ASA = calculate_ASA_pose(twist_init(1:round(N),:));
+            %                 parameters.direction_vector_x = ASA(1:3,1);
+            %                 parameters.direction_vector_y = cross(twist_init(1,1:3)',twist_init(round(1*N/10),1:3)');
+            %                 [FSt_init,invariants_init] = calculate_screw_invariants_from_discrete_twist(twist_init,stepsize,parameters);
+            %
+            %                 figure; plot(invariants_init(:,2))
+            %                 invariants_init = invariants_init+1e-12;
+            %
+            %                 %                 twist_init = calculate_posetwist_from_discrete_poses(meas_T,stepsize);
+            %                 %                 twist_init = [twist_init(:,4:6) twist_init(:,1:3)];
+            %                 %                 init_vel = vecnorm(twist_init(:,1:3),2,2);
+            %                 %                 start_ind = round(1,0);
+            %                 %                 end_ind = round(N,0);
+            %
+            %
+            %
+            %             else
+            %
+            %
+            %                 figure; hold on; axis equal;
+            %                 plot3(twist_init(end_ind,1),twist_init(end_ind,2),twist_init(end_ind,3),'b.','MarkerSize',20);
+            %                 plot3(twist_init(start_ind:end_ind,1),twist_init(start_ind:end_ind,2),twist_init(start_ind:end_ind,3),'.');
+            %                 plot3(0,0,0,'r.');
+            %                 ASA = calculate_ASA_pose(twist_init(start_ind:end_ind,:));
+            %                 mean_twist = ASA(1:3,1); %mean_twist = sum(twist_init(:,1:3),1)/N;
+            %                 mean_normal = ASA(1:3,2);
+            %                 plot3(mean_twist(1),mean_twist(2),mean_twist(3),'g.'); plot3(mean_normal(1),mean_normal(2),mean_normal(3),'k.');
+            %
+            %                 invariants_init = zeros(N-1,3)+1e-12;
+            %                 invariants_init(:,1) = init_vel(1:end-1);
+            %                 for i=1:N
+            %                     FSt_init(:,:,i) = ASA(1:3,1:3);
+            %                 end
+            %                 %                 % Estimate initial pose twist using a finite differences approach
+            %                 %                 twist_init = calculate_posetwist_from_discrete_poses(meas_T,stepsize);
+            %                 %                 twist_init = smoothdata(twist_init,'gaussian',10); % ENSURE A SMOOTH INITIALISATION => AVOID INITIALISATIONS WITH FRAMEFLIPS
+            %                 %
+            %                 %                 %plot_descriptor(twist_init,[],'initial twists',h,parameterization,'pose_twist')
+            %                 %
+            %                 %                 % Initialize invariants and moving frames over the whole horizon using discretized analytical formulas
+            %                 %                 parameters = struct(); % optional arguments
+            %                 %                 parameters.signed_invariants = 1; % allow all invariants to become either positive or negative, otherwise omega1 and omega2 are always positive but X-axis and Y-axis may flip
+            %                 %                 [FSt_init,~,invariants_init] = calculate_vector_invariants_from_discrete_twist(twist_init,stepsize,parameters);
+            %                 %                 invariants_init = invariants_init(:,4:6) +1e-10;
+            %                 %                 %L_init = 1;
+            %
+            %
+            %                 % invariants_init(:,1) = stepsize;
 
-            else
 
-
-                figure; hold on; axis equal;
-                plot3(twist_init(end_ind,1),twist_init(end_ind,2),twist_init(end_ind,3),'b.','MarkerSize',20);
-                plot3(twist_init(start_ind:end_ind,1),twist_init(start_ind:end_ind,2),twist_init(start_ind:end_ind,3),'.');
-                plot3(0,0,0,'r.');
-                ASA = calculate_ASA_pose(twist_init(start_ind:end_ind,:));
-                mean_twist = ASA(1:3,1); %mean_twist = sum(twist_init(:,1:3),1)/N;
-                mean_normal = ASA(1:3,2);
-                plot3(mean_twist(1),mean_twist(2),mean_twist(3),'g.'); plot3(mean_normal(1),mean_normal(2),mean_normal(3),'k.');
-
-                invariants_init = zeros(N-1,3)+1e-12;
-                invariants_init(:,1) = init_vel(1:end-1);
-                for i=1:N
-                    FSt_init(:,:,i) = ASA(1:3,1:3);
-                end
-                %                 % Estimate initial pose twist using a finite differences approach
-                %                 twist_init = calculate_posetwist_from_discrete_poses(meas_T,stepsize);
-                %                 twist_init = smoothdata(twist_init,'gaussian',10); % ENSURE A SMOOTH INITIALISATION => AVOID INITIALISATIONS WITH FRAMEFLIPS
-                %
-                %                 %plot_descriptor(twist_init,[],'initial twists',h,parameterization,'pose_twist')
-                %
-                %                 % Initialize invariants and moving frames over the whole horizon using discretized analytical formulas
-                %                 parameters = struct(); % optional arguments
-                %                 parameters.signed_invariants = 1; % allow all invariants to become either positive or negative, otherwise omega1 and omega2 are always positive but X-axis and Y-axis may flip
-                %                 [FSt_init,~,invariants_init] = calculate_vector_invariants_from_discrete_twist(twist_init,stepsize,parameters);
-                %                 invariants_init = invariants_init(:,4:6) +1e-10;
-                %                 %L_init = 1;
-
-
-                % invariants_init(:,1) = stepsize;
-
-            end
             %% Set variables
 
             %             for k=1:wdow_length
