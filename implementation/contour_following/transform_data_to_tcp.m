@@ -20,11 +20,12 @@ function [T_tcp_w,wrench_tcp_tcp] = transform_data_to_tcp(T_tr_w,wrench_lc_lc,T_
 N = size(T_tr_w,3);
 T_lc_tcp = inverse_pose(T_tcp_lc);
 T_tcp_w = zeros(4,4,N);
+wrench_tcp_tcp = zeros(N,6);
 for j = 1 : N
     T_tcp_w(:,:,j) = T_tr_w(:,:,j)*T_tcp_tr;
+    wrench_tcp_tcp(j,:) = transform_screw(T_lc_tcp,wrench_lc_lc(j,:)')';
 end
 
-wrench_tcp_tcp = S_transform(T_lc_tcp,wrench_lc_lc);
 
 
 

@@ -1,4 +1,4 @@
-function [invariants_output, ISA_pose_output] = initialize_invariants_screw(screw_trajectory,bool)
+function [invariants_output, ISA_pose_output] = initialize_invariants_screw(screw_trajectory,bool,parameters)
 %%
 % In this code, initial values for the screw-invariants and moving frame are calculated
 % based on an Average Screw Axis (ASA) frame.
@@ -12,7 +12,7 @@ function [invariants_output, ISA_pose_output] = initialize_invariants_screw(scre
 %   ISA_pose         (4x4xN): initial values for the moving frame
 %
 
-T_ASA = calculate_ASA_pose(screw_trajectory);
+T_ASA = calculate_ASA_pose(screw_trajectory,parameters.regul_origin_ASA);
 
 % Select the signed directions of the axes of the initial moving frames
 N = size(screw_trajectory,1);
@@ -29,7 +29,9 @@ end
 % Select a segment of the trajectory containing sufficient trajectory information
 % and where the mean is well-defined
 %(four this contour, 3/4 of the trajectory is selected)
-mean_vector = sum(screw_trajectory(1:end-round(N/4),1:3),1)*3/N;
+mean_vector = sum(screw_trajectory(round(N/3):end,1:3),1)/(2/3*N);
+% mean_vector = sum(screw_trajectory(:,1:3),1)/N;
+
 
 if dot(e_x,mean_vector) < 0
     e_x = -e_x;

@@ -130,7 +130,7 @@ classdef OCP_calculate_vector_invariants_rotation < handle
 
             %% Define solver
             opti.minimize(objective);
-            opti.solver('ipopt',struct('print_time',1),struct('max_iter',max_iters,'tol',1e-10,'print_level',0));
+            opti.solver('ipopt',struct('print_time',1,'expand',true), struct('max_iter',max_iters,'tol',1e-10,'print_level',0));
 
             %% Save variables
             obj.X.R_FS= R_FS;

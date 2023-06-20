@@ -159,10 +159,11 @@ classdef OCP_calculate_vector_invariants_vector < handle
 
             N = obj.window_length;
             [invariants_init, FS_init] = initialize_invariants_vector(meas_vec_traj,obj.param_positive_obj_invariant);
-
+            
             % Initialize states + controls
             for k=1:N
                 obj.opti.set_initial(obj.X.R_FS{k}, FS_init(:,:,k)); %construct_init_FS_from_traj(meas_traj.Obj_location);
+%                 obj.opti.set_initial(obj.X.R_FS{k}, eye(3)); %construct_init_FS_from_traj(meas_traj.Obj_location);
                 obj.opti.set_initial(obj.X.c_obj{k}, meas_vec_traj(k,:)); % initialized with measurement
             end
 

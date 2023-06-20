@@ -25,10 +25,12 @@ gravity = 9.81;
 force_weight_world  = [0 0 -mass*gravity]';
 % moment resulted by weight in {w}
 moment_weight_world = [0 0 0]';
-% total wrench resulted by weight expressed in {w}
-wrench_weight_world = [force_weight_world; moment_weight_world];
+
 % virtual force to remove offset expresesd in {lc}
 wrench_virtual_cog  = [-force_weight_world; moment_weight_world];
+
+% total wrench resulted by weight expressed in {w}
+wrench_weight_world = [force_weight_world; moment_weight_world];
 
 N = size(T_tr_w,3);
 R_lc_w  = zeros(3,3,N);
@@ -41,17 +43,17 @@ end
 % To remove the effect of weight
 wrench_compensated_lc = zeros(N,6);
 for j = 1 : N
-    S_w_lc = S_transformation_matrix(compose_pose_matrix(R_w_lc(:,:,j),p_cog_lc));
-    wrench_weight_lc = S_w_lc*wrench_weight_world;
+    R_w_cog = R_w_lc(:,:,j);
+    wrench_weight_cog = transform_screw(compose_pose_matrix(R_w_cog,zeros(1,3)),wrench_weight_world);
+    wrench_weight_lc = transform_screw(compose_pose_matrix(eye(3,3),p_cog_lc),wrench_weight_cog);
     wrench_compensated_lc(j,:) = wrench_lc_lc_init(j,:)-wrench_weight_lc';
 end
 
 % To remove the effect of offset by a virtual force
 wrench_modified_lc = zeros(N,6);
-S_cog_lc= S_transformation_matrix(compose_pose_matrix(eye(3,3),p_cog_lc));
+wrench_virtual_lc = transform_screw(compose_pose_matrix(eye(3,3),p_cog_lc),wrench_virtual_cog)';
 for j = 1 : N
-    wrench_virtual_lc = S_cog_lc*wrench_virtual_cog;
-    wrench_modified_lc(j,:) = wrench_compensated_lc(j,:)-wrench_virtual_lc';
+    wrench_modified_lc(j,:) = wrench_compensated_lc(j,:)-wrench_virtual_lc;
 end
 
 wrench_lc_lc_final = wrench_modified_lc;

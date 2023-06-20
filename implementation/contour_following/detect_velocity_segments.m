@@ -17,9 +17,9 @@ end_segment = zeros(N,1);
 norm_velocity(1,:) = norm(velocity(1,:));
 for i = 2 : N
     norm_velocity(i,:) = norm(velocity(i,:));
-    if norm_velocity(i,:) > vel_thr && norm_velocity(i-1,:) < vel_thr && i < 0.5*N
+    if norm_velocity(i,:) > vel_thr && norm_velocity(i-1,:) < vel_thr && i < 0.6*N
         start_segment(i,1) = i;
-    elseif norm_velocity(i,:) < vel_thr && norm_velocity(i-1,:) > vel_thr && i > 0.5*N
+    elseif norm_velocity(i,:) < vel_thr && norm_velocity(i-1,:) > vel_thr && i > 0.6*N
         end_segment(i,1) = i-1;
     end
 end
@@ -37,4 +37,12 @@ if ~isempty(end_segment)
     end_segment = end_segment(end);
 else
     end_segment = N;
+end
+
+if 0
+    figure
+    plot(norm_velocity,'b')
+    hold on
+    plot(start_segment,norm_velocity(start_segment),'r*')
+    plot(end_segment,norm_velocity(end_segment),'g*')
 end

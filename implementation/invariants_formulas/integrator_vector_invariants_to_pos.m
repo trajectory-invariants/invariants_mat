@@ -4,7 +4,7 @@ function [R_FSt_plus1,p_obj_plus1] = integrator_vector_invariants_to_pos(R_FSt,p
 %
 % Input:   R_FSt_plus1  = current rotation matrix of FS frame (3x3)
 %          p_obj        = currentposition vector of object (3x1)
-%          invariants   = frenet-serret invariants (Nx3) [it1|it2|it3]
+%          invariants   = frenet-serret invariants (1x3) [it1|it2|it3]
 %          h            = integration step
 % Output:  R_FSt_plus1  = updated rotation matrix of  FS frame (3x3)
 %          p_obj_plus1  = updated position vector of object (3x1)
