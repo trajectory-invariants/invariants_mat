@@ -1,4 +1,8 @@
-Matlab code for calculating invariant descriptors of force and moment trajectories using optimal control. 
+Matlab code for calculating invariant descriptors of trajectories using optimal control. 
+
+A **Python version** is under development [at this location](https://gitlab.kuleuven.be/robotgenskill/public_code/invariants_py).
+
+## Features
 
 Two types of descriptors are supported:
 1. **Vector invariants** (i.e. Frenet-Serret invariants of curvature and torsion) which can be applied to position, orientation, translational velocity, rotational velocity, force and moment trajectories
