@@ -1,4 +1,6 @@
-Matlab code for calculating invariant descriptors of force and moment trajectories using optimal control. Two types of descriptors are supported:
+Matlab code for calculating invariant descriptors of force and moment trajectories using optimal control. 
+
+Two types of descriptors are supported:
 1. **Vector invariants** (i.e. Frenet-Serret invariants of curvature and torsion) which can be applied to position, orientation, translational velocity, rotational velocity, force and moment trajectories
 2. **Screw invariants** (based on the instantaneous screw axis) which can be applied to screw twist and wrench trajectories
 
