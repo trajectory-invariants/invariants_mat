@@ -4,7 +4,7 @@ function load_casadi_library()
 
 % Find path of directory where the Casadi folder should be located
 path = mfilename('fullpath');
-directoryname = [fileparts(path),'/../../libraries/'];
+directoryname = [fileparts(path),'/../libraries/'];
 
 % Set name of Casadi folder depending on operating system
 if ismac

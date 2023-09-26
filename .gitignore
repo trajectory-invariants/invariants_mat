@@ -6,3 +6,4 @@
 *.pdf
 output/*.mat
 /implementation/invariants_formulas/*.lnk
+/experiments/results/*.mat

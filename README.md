@@ -1,6 +1,6 @@
 Matlab code for calculating invariant descriptors of trajectories using optimal control. 
 
-A **Python version** is under development [at this location](https://gitlab.kuleuven.be/robotgenskill/public_code/invariants_py).
+A **Python version** of this package is under active development and can be found [here](https://gitlab.kuleuven.be/robotgenskill/public_code/invariants_py).
 
 ## Features
 
@@ -14,22 +14,11 @@ In addition to calculating the invariants, this toolbox supports:
 
 Main contributors: Maxim Vochten, Ali Mousavi, Arno Verduyn, Riccardo Burlizzi (KU Leuven)
 
-## Installation instructions
+## Installation
 
-Download the **CasADi 3.5.5** Matlab package from [https://web.casadi.org/get/](https://web.casadi.org/get/) according to your version of Matlab and operating system. Unzip the downloaded package and place the resulting folder inside the `libraries/` folder. 
+Download [**CasADi 3.6.3**](https://github.com/casadi/casadi/releases/tag/3.6.3) according to your version of Matlab and operating system. Unzip the downloaded package and place the resulting folder inside the `invariants-mat/libraries/` directory. 
 
-As an example, if you are in Windows and using Matlab >R2016a, the result should be that CasADi can be found here: 
-`invariants-motion-and-force-trajectories/libraries/casadi-windows-matlabR2016a-v3.5.5/`
-
-## Application to a demonstrated 3D contour following task
-
-The framework is applied for a human-demonstrated 3D contour following task where both the motion and contact force of the tool in contact with the contour are recorded. The invariant properties of the descriptors under different calibrations, experimental setups and artificial transformations are verified.
-
-For the analysis with screw invariant descriptors, run `contourfollowing_screw_invariants`.
-
-For the analysis with vector invariant descriptors, run `contourfollowing_vector_invariants`.
-
-## Application to a demonstrated peg-on-hole alignment task
-
+As an example, if you are in Windows and using Matlab >R2016a, the result should be that CasADi can be found here:
+`invariants-mat/libraries/casadi-windows-matlabR2016a-v3.5.5/`
 
 
