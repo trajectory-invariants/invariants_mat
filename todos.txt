@@ -1,6 +1,0 @@
-hernoem figures/ to experiments/results/
-hernoem output/ naar results/
-
-matlab sphinx documentation
-
-change casadi version
