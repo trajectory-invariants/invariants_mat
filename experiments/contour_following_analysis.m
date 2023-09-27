@@ -2,7 +2,7 @@
 
 close all; clear; clc;
 addpath(genpath('../implementation/'));
-addpath(genpath('../experiments_code/'));
+addpath(genpath('./experiments_code/'));
 
 % Settings - analysis
 settings_analysis.trajectory_type = 'pose'; % {pose,rotation,position,wrench,force,moment}
@@ -22,7 +22,7 @@ parameters_OCP.weights.rms_error_moment = 0.16; % [Nm]
 parameters_OCP.weights.L = 0.5; % [m] global scale to weigh the rotational and translational moving frame invariants
 parameters_OCP.regul_origin_ASA = 10^(-10); % Used to regulate the origin of the ASA-frame which is used for the initialization of the OCP
 parameters_OCP.max_iters = 500;
-parameters_OCP.window.window_length = N;
+parameters_OCP.window.window_length = settings_analysis.N;
 parameters_OCP.positive_obj_invariant = 0;
 parameters_OCP.positive_mov_invariant = 0;
 
@@ -33,13 +33,12 @@ settings_plots.bool_visualize_reconstruction_errors = 0;   % {0,1}
 settings_plots.bool_visualize_summary = 1;                 % {0,1}
 settings_plots.bool_paper_plots = 0;                       % {0,1}
 
-%% Load data %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Load and preprocess data %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-check_input_screw(trajectory_type,viewpoint,referencepoint);
+check_input_screw(settings_analysis);
 
 % Load data from individual trials
-[measurement_data,reference_data] = contour_preprocess_data(path_to_data_folder,settings_analysis);
-nb_trials = trial_n-trial_0+1; % number of trials
+[measurement_data,reference_data] = load_and_preprocess_data(settings_analysis);
 
 %% Calculate invariants %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -48,6 +47,7 @@ object = OCP_calculate_screw_invariants_pose(parameters_OCP);
 
 % Initialize results
 results.settings_analysis = settings_analysis;
+nb_trials = trial_n-trial_0+1; % number of trials
 results.trials;
 
 for trial=1:nb_trials
