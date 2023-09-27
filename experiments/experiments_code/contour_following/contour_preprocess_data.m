@@ -382,4 +382,10 @@ wrench_ref= wrench;
 force_ref = wrench(:,1:3);
 moment_ref = wrench(:,4:6);
 velocity_profile_ref.velocity_profile = velocity_profile';
+
+% Invert sign of force when viewed in the world (reaction forces)
+if strcmp(viewpoint,'world')
+    wrench_ref = -wrench_ref; force_ref = -force_ref; moment_ref = -moment_ref;
+    wrench = -wrench; force = -force; moment = -moment;
+end
 end
