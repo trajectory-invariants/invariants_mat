@@ -19,8 +19,8 @@ As an example, if you are in Windows and using Matlab >R2016a, the result should
 
 ## Upcoming improvements
 - **More calculation examples** will be added that show how to calculate different invariant descriptors on single trajectories and on special motions. Expected release: end of October 2023.
-- Functionality will be added to **enable trajectory generation** starting from an invariant descriptor using the approach described [here](https://doi.org/10.1016/j.robot.2019.103291). Expected release: end of November 2023.
-- A **Python version** is currently under active development, referred to as [invariants_py](https://gitlab.kuleuven.be/robotgenskill/public_code/invariants_py). It will mirror all functionality and in addition focus on very fast calculation times by incorporating the [Fatrop solver](https://gitlab.kuleuven.be/robotgenskill/fatrop/fatrop).
+- Functionality will be added to **enable shape-preserving trajectory adaptation** using the approach described [here](https://doi.org/10.1016/j.robot.2019.103291). Expected release: end of November 2023.
+- A **Python version** is currently under active development, referred to as [invariants_py](https://gitlab.kuleuven.be/robotgenskill/public_code/invariants_py). It will mirror all functionality and in addition focus on extremely fast calculation times by incorporating the [Fatrop solver](https://gitlab.kuleuven.be/robotgenskill/fatrop/fatrop).
 
 ### Contributors 
 
