@@ -7,12 +7,15 @@ addpath(genpath('./experiments_code/'));
 % Settings - analysis
 settings_analysis.trajectory_type = 'pose'; % {pose,rotation,position,wrench,force,moment}
 settings_analysis.viewpoint = 'world'; % {world, body}
-settings_analysis.referencepoint = 'tracker'; % {tracker, tool_point, force_sensor, middle_contour}
-settings_analysis.parameterization = 'dimless_arclength'; % {time_based, dimless_arclength}
+settings_analysis.ref_point_motion = 'tracker'; % {tracker, tool_point}
+settings_analysis.ref_frame_force = 'tracker'; % {tracker, tool_point, under_contour}
+settings_analysis.progress_choice = 'arc_length'; % {time,arc_length,arc_angle}
 settings_analysis.N = 101;
 settings_analysis.trial_0 = 1; % {1-12}
 settings_analysis.trial_n = 12; % {1-12}
 settings_analysis.path_to_data_folder = './data/';
+settings_analysis.velocity_translation_threshold = 0.05; % threshold on translational velocity [m/s]
+settings_analysis.velocity_rotation_threshold = 0.35; % threshold on rotational velocity [rad/s]
 
 % Parameters in optimal control problems
 parameters_OCP.weights.rms_error_orientation = 0.002; % [mm]
@@ -35,10 +38,22 @@ settings_plots.bool_paper_plots = 0;                       % {0,1}
 
 %% Load and preprocess data %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-check_input_screw(settings_analysis);
-
+% Check if settings analysis is valid
+%check_input(settings_analysis);
+%
 % Load data from individual trials
-[measurement_data,reference_data] = load_and_preprocess_data(settings_analysis);
+
+path_to_data = strcat([settings_analysis.path_to_data_folder 'contour_following/reference']);
+data_exp = load_all_trials_contour(path_to_data);
+measurement_data = preprocess_contour_reference_data(data_exp{1},settings_analysis);
+
+
+path_to_data = strcat([settings_analysis.path_to_data_folder 'contour_following/measurements']);
+data_exp = load_all_trials_contour(path_to_data);
+measurement_data = preprocess_contour_measurement_data(data_exp,settings_analysis);
+
+
+
 
 %% Calculate invariants %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

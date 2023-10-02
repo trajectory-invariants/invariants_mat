@@ -26,5 +26,4 @@ header.Ty = 'jr3.sensor_0.wrench_filter_0.torque.y';    % Y-axis of the torque
 header.Tz = 'jr3.sensor_0.wrench_filter_0.torque.z';    % Z-axis of the torque
 
 %% Load the data
-
 data = data_structure(path_to_data,header);

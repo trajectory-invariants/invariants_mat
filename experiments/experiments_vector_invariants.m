@@ -16,9 +16,7 @@ wrenchtype = 'real'; % {real, synthetic}
 
 % {orientation}   +   {world}   +   {tracker}           +   {-}         -> shown in Figure 6b
 % {orientation}   +   {world}   +   {tool_point}        +   {-}
-% {orientation}   +   {body}    +   {tracker}           +   {-}
-% {orientation}   +   {body}    +   {tool_point}        +   {-}
-% {orientation}   +   {body}    +   {middle_contour}    +   {-}
+% {orientation}   +   {bod y}    +   {middle_contour}    +   {-}
 % {force}         +   {world}   +   {tracker}           +   {real}
 % {force}         +   {world}   +   {tool_point}        +   {real}
 % {force}         +   {world}   +   {force_sensor}      +   {real}

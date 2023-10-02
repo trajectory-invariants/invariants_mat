@@ -23,11 +23,11 @@ data                = cell(nfiles,1);
 
 for i = 1 : nfiles
     
-    data{i}.t       = data_file{i}.data(:, find(strcmp(data_file{i}.textdata, header.t)));
+    data{i}.t       = data_file{i}.data(:, strcmp(data_file{i}.textdata, header.t));
     
-    Px              = data_file{i}.data(:, find(strcmp(data_file{i}.textdata, header.Px)));
-    Py              = data_file{i}.data(:, find(strcmp(data_file{i}.textdata, header.Py)));
-    Pz              = data_file{i}.data(:, find(strcmp(data_file{i}.textdata, header.Pz)));
+    Px              = data_file{i}.data(:, strcmp(data_file{i}.textdata, header.Px));
+    Py              = data_file{i}.data(:, strcmp(data_file{i}.textdata, header.Py));
+    Pz              = data_file{i}.data(:, strcmp(data_file{i}.textdata, header.Pz));
     
     rw              = data_file{i}.data(:, find(strcmp(data_file{i}.textdata, header.rw)));
     rx              = data_file{i}.data(:, find(strcmp(data_file{i}.textdata, header.rx)));
