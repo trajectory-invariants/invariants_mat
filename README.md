@@ -1,6 +1,9 @@
-Matlab code for calculating invariant descriptors of trajectories using optimal control. 
+Matlab code to support the calculation of invariant trajectory descriptors using optimal control. 
 
-A **Python version** is under development [at this location](https://gitlab.kuleuven.be/robotgenskill/public_code/invariants_py).
+## Upcoming improvements
+- **More calculation examples** will be added that show how to calculate different invariant descriptors on single trajectories and on special motions. Expected release: end of October 2023.
+- Functionality will be added to **enable trajectory generation** starting from an invariant descriptor using the approach described [here](https://doi.org/10.1016/j.robot.2019.103291). Expected release: end of November 2023.
+- A **Python version** is currently under active development, referred to as [invariants_py](https://gitlab.kuleuven.be/robotgenskill/public_code/invariants_py). It will mirror all functionality and in addition focus on very fast calculation times by incorporating the [Fatrop solver](https://gitlab.kuleuven.be/robotgenskill/fatrop/fatrop).
 
 ## Features
 
@@ -16,20 +19,10 @@ Main contributors: Maxim Vochten, Ali Mousavi, Arno Verduyn, Riccardo Burlizzi (
 
 ## Installation instructions
 
-Download the **CasADi 3.5.5** Matlab package from [https://web.casadi.org/get/](https://web.casadi.org/get/) according to your version of Matlab and operating system. Unzip the downloaded package and place the resulting folder inside the `libraries/` folder. 
+Download [**CasADi 3.5.5**](https://github.com/casadi/casadi/releases/tag/3.5.5) according to your version of Matlab and operating system. Unzip the downloaded package and place the resulting folder inside the `invariants_mat/libraries/` folder. 
 
 As an example, if you are in Windows and using Matlab >R2016a, the result should be that CasADi can be found here: 
-`invariants-motion-and-force-trajectories/libraries/casadi-windows-matlabR2016a-v3.5.5/`
-
-## Application to a demonstrated 3D contour following task
-
-The framework is applied for a human-demonstrated 3D contour following task where both the motion and contact force of the tool in contact with the contour are recorded. The invariant properties of the descriptors under different calibrations, experimental setups and artificial transformations are verified.
-
-For the analysis with screw invariant descriptors, run `contourfollowing_screw_invariants`.
-
-For the analysis with vector invariant descriptors, run `contourfollowing_vector_invariants`.
-
-## Application to a demonstrated peg-on-hole alignment task
+`invariants_mat/libraries/casadi-windows-matlabR2016a-v3.5.5/`
 
 
 
