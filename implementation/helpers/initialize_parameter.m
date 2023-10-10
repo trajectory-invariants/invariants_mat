@@ -1,8 +1,9 @@
 function value = initialize_parameter(structure, field_name, default_value)
-% Return value of a given field from a given structure. If the field 
-% doesn't exist, return the default value.
+% Returns field value in a given structure. 
+% If the field doesn't exist, return the default value.
 %
-% This function helps to deal with the initialization of parameters.
+% This function helps to deal with the initialization of parameters that may or may not have been specified.
+% It is similar in functionality to Python where you can provide a default value to a function.
 %
 % Input: structure
 %        field_name [string]
