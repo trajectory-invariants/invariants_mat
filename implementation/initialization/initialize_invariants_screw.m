@@ -1,4 +1,4 @@
-function [invariants_output, ISA_pose_output] = initialize_invariants_screw(screw_trajectory,bool,parameters)
+function [invariants_output, ISA_pose_output] = initialize_invariants_screw(screw_trajectory,bool,regul_origin_ASA)
 %%
 % In this code, initial values for the screw-invariants and moving frame are calculated
 % based on an Average Screw Axis (ASA) frame.
@@ -12,7 +12,7 @@ function [invariants_output, ISA_pose_output] = initialize_invariants_screw(scre
 %   ISA_pose         (4x4xN): initial values for the moving frame
 %
 
-T_ASA = calculate_ASA_pose(screw_trajectory,parameters.regul_origin_ASA);
+T_ASA = calculate_ASA_pose(screw_trajectory,regul_origin_ASA);
 
 % Select the signed directions of the axes of the initial moving frames
 N = size(screw_trajectory,1);

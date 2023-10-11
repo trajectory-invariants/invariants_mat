@@ -11,6 +11,7 @@ classdef OCP_calculate_screw_invariants_pose < handle
         param_positive_obj_invariant;
         param_positive_mov_invariant;
         window_length; % window size
+        parameters;
         %T_isa_0; % ISA frame at start of window
         %parameterization;
         %sol; % previous solution
@@ -146,7 +147,7 @@ classdef OCP_calculate_screw_invariants_pose < handle
 
             %% Define solver
             opti.minimize(objective);
-            opti.solver('ipopt',struct('print_time',1,'expand',true),struct('max_iter',max_iters,'tol',10e-8,'print_level',1));
+            opti.solver('ipopt',struct('print_time',1,'expand',true),struct('max_iter',max_iters,'tol',10e-8,'print_level',5));
 
             %% Save window variables
             obj.X.T_obj = T_obj;
@@ -167,12 +168,15 @@ classdef OCP_calculate_screw_invariants_pose < handle
             obj.window_length = window_length;
             obj.P.h = h;
             obj.opti = opti;
+            obj.parameters = parameters;
             %obj.flag_first_time = 0;
         end
 
-        function optim_result = calculate_invariants(obj,meas_poses,stepsize,parameters)
+        function optim_result = calculate_invariants(obj,meas_poses,progress)
 
             %import casadi.*
+            regul_origin_ASA = obj.parameters.regul_origin_ASA;
+            stepsize = mean(diff(progress)); % stepsize
 
             measured_orientation = meas_poses(1:3,1:3,:);
             measured_position = squeeze(meas_poses(1:3,4,:))';
@@ -180,7 +184,7 @@ classdef OCP_calculate_screw_invariants_pose < handle
 
             % Estimate initial screw twist using a finite differences approach
             twist_init = calculate_screwtwist_from_discrete_poses(measured_orientation,measured_position',stepsize);
-            [invariants_init, ISA_frame_init] = initialize_invariants_screw(twist_init,obj.param_positive_obj_invariant,parameters);
+            [invariants_init, ISA_frame_init] = initialize_invariants_screw(twist_init,obj.param_positive_obj_invariant,regul_origin_ASA);
 
             % Initialize states
             for k=1:N
@@ -226,8 +230,8 @@ classdef OCP_calculate_screw_invariants_pose < handle
 
             optim_result.objective = solution.value(obj.O.objective);
             optim_result.objective_reg = solution.value(obj.O.objective_reg);
-            optim_result.ISA_frames = reshape(solution.value([obj.X.T_isa{:}]),3,4,N);
-            optim_result.Obj_frames = reshape(solution.value([obj.X.T_obj{:}]),3,4,N);
+            optim_result.moving_frames = reshape(solution.value([obj.X.T_isa{:}]),3,4,N);
+            optim_result.reconstruction = reshape(solution.value([obj.X.T_obj{:}]),3,4,N);
             optim_result.invariants = solution.value(obj.U)';
             optim_result.invariants = [ optim_result.invariants ; optim_result.invariants(end,:) ];
             %             if strcmp(obj.parameterization,'geometric')

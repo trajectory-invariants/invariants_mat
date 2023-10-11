@@ -72,21 +72,20 @@ reference_data = preprocess_reference_data(raw_data_reference{1},settings_analys
 %% Calculate invariants %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Initialize OCP by constructing symbolic optimization problem
-object = OCP_calculate_screw_invariants_pose(parameters_OCP);
+OCP = specify_optimal_control_problem(parameters_OCP,settings_analysis.trajectory_type);
 
 % Initialize results
-results.settings_analysis = settings_analysis;
-nb_trials = trial_n-trial_0+1; % number of trials
-results.trials;
+nb_trials = settings_analysis.trial_n - settings_analysis.trial_0 + 1; % number of trials
 
 for trial=1:nb_trials
     disp(['analyzing trial ' num2str(trial) '/' num2str(nb_trials) ' ...']);
 
     % Call class with measurements
-    OCP_results = object.calculate_invariants(measured_trajectory);
+    [measured_trajectory,progress] = select_measurements(measurement_data{trial},settings_analysis.trajectory_type);
+    OCP_results = OCP.calculate_invariants(measured_trajectory,progress);
 
     % Store results
-    results.trials(trial).measured_trajectory = measurements;
+    results.trials(trial).measured_trajectory = measured_trajectory;
     results.trials(trial).invariants = OCP_results.invariants;
     results.trials(trial).reconstructed_trajectory = OCP_results.reconstruction;
     results.trials(trial).moving_frames = OCP_results.moving_frames;
@@ -95,10 +94,11 @@ end
 disp('analyzing reference invariants:');
 
 % Call class with measurements
-OCP_results = object.calculate_invariants(measured_trajectory);
+[reference_trajectory,progress] = select_measurements(reference_data,settings_analysis.trajectory_type);
+OCP_results = OCP.calculate_invariants(reference_trajectory,progress);
 
 % Store results
-results.reference.measured_trajectory = measured_trajectory;
+results.reference.measured_trajectory = reference_trajectory;
 results.reference.invariants = OCP_results.invariants;
 results.reference.reconstructed_trajectory = OCP_results.reconstruction;
 results.reference.moving_frames = OCP_results.moving_frames;
