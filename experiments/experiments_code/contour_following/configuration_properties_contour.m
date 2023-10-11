@@ -1,4 +1,4 @@
-function [T_tcp_tr,T_tcp_lc,T_lc_tr,p_cog_lc] = configuration_properties_contour(configuration)
+function [weight_calib,T_tcp_tr,T_tcp_lc] = configuration_properties_contour(trial)
 % This function provides the geometric properties of the tool.
 % 
 % Notation:
@@ -16,6 +16,11 @@ function [T_tcp_tr,T_tcp_lc,T_lc_tr,p_cog_lc] = configuration_properties_contour
 %     T_lc_tr:          pose of {lc} wrt {tr}               [4x4x1]
 %     p_cog_lc:         position of {cog} wrt {lc}          [1,3]
 
+
+% number identifying the location and orientation of the force sensor {lc} and motion tracker {tr} on the tool
+sensor_id = configurations();
+configuration = sensor_id(trial);
+mass = 1.96138/9.806; % mass of tool in [kg] determined with a least-squares calibration procedure
 %%
 if strcmp(configuration,'a')
     % Rotation {tcp} wrt {tr}
@@ -39,6 +44,7 @@ if strcmp(configuration,'a')
     
     % Center of gravity (COG) of the tool in [m] determined with a least-squares calibration procedure expressed in {lc}
     p_cog_lc = [0.00181208, 0.000785471, -0.0273515];
+
 elseif strcmp(configuration,'b')
     % Rotation {tcp} wrt {tr}
     R_tcp_tr = roty(180)*rotx(135); % {tr} towards {tcp} R1 * R2
@@ -61,6 +67,7 @@ elseif strcmp(configuration,'b')
     
     % Center of gravity (COG) of the tool in [m] determined with a least-squares calibration procedure expressed in {lc}
     p_cog_lc = [0.00181208, 0.000785471, -0.0273515];
+
 elseif strcmp(configuration,'c')
     % Rotation {tcp} wrt {tr}
     R_tcp_tr = rotx(135);
@@ -83,6 +90,7 @@ elseif strcmp(configuration,'c')
     
     % Center of gravity (COG) of the tool in [m] determined with a least-squares calibration procedure expressed in {lc}
     p_cog_lc = [0.00181208, 0.000785471, -0.0273515];
+
 elseif strcmp(configuration,'d')
     % Rotation {tcp} wrt {tr}
     R_tcp_tr = roty(90)*rotx(135); % {tr} towards {tcp} R1 * R2
@@ -105,6 +113,7 @@ elseif strcmp(configuration,'d')
     
     % Center of gravity (COG) of the tool in [m] determined with a least-squares calibration procedure expressed in {lc}
     p_cog_lc = [0.00181208, 0.000785471, -0.0273515];
+
 elseif strcmp(configuration,'e')
     % Rotation {tcp} wrt {tr}
     R_tcp_tr = roty(180)*rotx(135); % {tr} towards {tcp} R1 * R2
@@ -127,6 +136,7 @@ elseif strcmp(configuration,'e')
     
     % Center of gravity (COG) of the tool in [m] determined with a least-squares calibration procedure expressed in {lc}
     p_cog_lc = [0.00181208, 0.000785471, -0.0273515];
+
 elseif strcmp(configuration,'f')
     % Rotation {tcp} wrt {tr}
     R_tcp_tr = roty(-90)*rotx(135); % {tr} towards {tcp} R1 * R2
@@ -150,3 +160,7 @@ elseif strcmp(configuration,'f')
     % Center of gravity (COG) of the tool in [m] determined with a least-squares calibration procedure expressed in {lc}
     p_cog_lc = [0.00181208, 0.000785471, -0.0273515];
 end
+
+weight_calib.mass = mass;
+weight_calib.T_lc_tr = T_lc_tr;
+weight_calib.p_cog_lc = p_cog_lc;

@@ -1,4 +1,4 @@
-function [wrench_lc_lc_final] = weight_compensation(T_tr_w,wrench_lc_lc_init,T_lc_tr,mass,p_cog_lc)
+function [wrench_lc_lc_final] = weight_compensation(T_tr_w,wrench_lc_lc_init,weight_calib)
 % This function removes the effects of tool weight from wrench measurement
 %
 % Notation:
@@ -16,6 +16,10 @@ function [wrench_lc_lc_final] = weight_compensation(T_tr_w,wrench_lc_lc_init,T_l
 %
 % Output:
 %     wrench_lc_lc_final    wrench in weight compensated form                       [Nx6]
+
+mass = weight_calib.mass;
+T_lc_tr = weight_calib.T_lc_tr;
+p_cog_lc = weight_calib.p_cog_lc;
 
 %% Parameters of the tool
 

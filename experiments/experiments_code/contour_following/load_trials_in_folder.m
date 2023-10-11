@@ -28,6 +28,9 @@ header.Tz = 'jr3.sensor_0.wrench_filter_0.torque.z';    % Z-axis of the torque
 %% Load the data
 data = data_structure(path_to_data,header);
 
+if isempty(data)
+    error('wrong path to data')
+end
 
 function data = data_structure(testfiledir,header)
 % This function converts the structure of the data in such a way that all

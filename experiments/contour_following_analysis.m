@@ -9,12 +9,17 @@ settings_analysis.trajectory_type = 'pose'; % {pose,rotation,position,wrench,for
 settings_analysis.viewpoint = 'world'; % {world, body}
 settings_analysis.ref_point_motion = 'tracker'; % {tracker, tool_point}
 settings_analysis.ref_frame_force = 'tracker'; % {tracker, tool_point, under_contour}
+settings_analysis.wrench_synthetic = false; % replace real contact wrench with synthetic data
+
 settings_analysis.progress_choice = 'arclength'; % {time,arclength,arcangle}
 settings_analysis.N = 101; % number of samples in one trial
-settings_analysis.trial_0 = 1; % {1-12}
-settings_analysis.trial_n = 12; % {1-12}
+% Choose trial_0 = trial_n = X, to only show results of trial X
+settings_analysis.trial_0 = 1; % number of first trial to consider {1-12}
+settings_analysis.trial_n = 12; % number of final trial to consider {1-12}
 settings_analysis.velocity_translation_threshold = 0.05; % threshold on translational velocity [m/s]
 settings_analysis.velocity_rotation_threshold = 0.35; % threshold on rotational velocity [rad/s]
+settings_analysis.artificial_variations = true;
+settings_analysis.application = 'contour'; % {contour,peg}
 
 % Parameters in optimal control problems
 parameters_OCP.weights.rms_error_orientation = 0.002; % [mm]
@@ -36,20 +41,33 @@ settings_plots.bool_visualize_summary = 1;                 % {0,1}
 settings_plots.bool_paper_plots = 0;                       % {0,1}
 
 %% Load and preprocess data %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Check if settings analysis is valid
-%check_input(settings_analysis);
+% The data has the following structure:
+% data{trial_number}.t = timestamps [Nx1]
+% data{trial_number}.pos = position coordinates of tracker attached to tool wrt world [Nx3]
+% data{trial_number}.quat = quaternion coordinates of tool wrt world [Nx4]
+% data{trial_number}.rotm = rotation matrix of tool wrt world [3x3xN]
+% data{trial_number}.force = force vector expressed in load cell frame [Nx3]
+% data{trial_number}.torque = moment vector wrt and expressed in load cell frame [Nx3]
 %
-% Load data from individual trials
+% The preprocessed data has the following structure:
+% preprocessed{trial_number}.progress = equidistant task progress variable [1xN]
+% preprocessed{trial_number}.pose = pose matrix of tool with specified reference point wrt world[4x4xN]
+% preprocessed{trial_number}.position = position vector of specified reference point wrt world [Nx3]
+% preprocessed{trial_number}.rotation = rotation matrix of tool wrt world [3x3xN]
+% preprocessed{trial_number}.wrench = contact wrench expressed in specified frame [Nx6]
+% preprocessed{trial_number}.force = contact force expressed in specified frame [Nx3]
+% preprocessed{trial_number}.moment = contact moment expressed in specified frame [Nx3]
+% preprocessed{trial_number}.vel_prof = task progress in function of time and velocity profile [Nx2]
 
-path_to_data = 'data/contour_following/reference';
-raw_data_reference = load_trials_in_folder(path_to_data);
-reference_data = preprocess_contour_reference_data(raw_data_reference{1},settings_analysis);
-
+% Real measurement data
 path_to_data = 'data/contour_following/measurements';
 data_exp = load_trials_in_folder(path_to_data);
 measurement_data = preprocess_contour_measurement_data(data_exp,settings_analysis);
 
+% Synthetic reference data
+path_to_data = 'data/contour_following/reference';
+raw_data_reference = load_trials_in_folder(path_to_data);
+reference_data = preprocess_reference_data(raw_data_reference{1},settings_analysis);
 
 %% Calculate invariants %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
