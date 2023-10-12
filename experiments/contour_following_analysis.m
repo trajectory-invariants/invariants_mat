@@ -1,4 +1,25 @@
-%% Contour motion
+% This script allows calculating invariant descriptors and moving frames 
+% from the recorded data of the contour following experiment
+%
+% The following settings need to be chosen to generate the figures of the paper
+%
+% Figure 6: 
+%	Figure 9a: trajectory_type = 'pose', ref_point_motion = 'tracker'
+%	Figure 9b: trajectory_type = 'rotation', ref_point_motion = 'tracker'
+%	Figure 9c: trajectory_type = 'position', ref_point_motion = 'tracker'
+%	Figure 9d: trajectory_type = 'position', ref_point_motion = 'tracker'
+% Figure 7: 
+%	Figure 7a: trajectory_type = 'wrench', ref_point_motion = 'tracker'
+%	Figure 7b: trajectory_type = 'force', ref_point_motion = 'tracker'
+%	Figure 7c: trajectory_type = 'moment', ref_point_motion = 'tracker'
+%	Figure 7d: trajectory_type = 'moment', ref_point_motion = 'tracker'
+% Figure 8: trajectory_type = 'wrench', ref_frame_force = ''
+% Figure 9: trajectory_type = 'wrench' ref_frame_force = ''
+% Figure 10:
+%	Figure 10a: trajectory_type = 'pose', ref_point_motion = 'tracker'
+%	Figure 10b: trajectory_type = 'wrench', ref_point_motion = 'tracker'
+%	Figure 10c: trajectory_type = 'moment', ref_point_motion = 'tracker'
+%	Figure 10d: trajectory_type = 'position', ref_point_motion = 'tracker'
 
 close all; clear; clc;
 addpath(genpath('../implementation/'));
@@ -6,24 +27,22 @@ addpath(genpath('./experiments_code/'));
 
 % Settings - analysis
 settings_analysis.trajectory_type = 'pose'; % {pose,rotation,position,wrench,force,moment}
-settings_analysis.viewpoint = 'world'; % {world, body}
 settings_analysis.ref_point_motion = 'tracker'; % {tracker, tool_point}
 settings_analysis.ref_frame_force = 'tracker'; % {tracker, tool_point, under_contour}
 settings_analysis.wrench_synthetic = false; % replace real contact wrench with synthetic data
-
 settings_analysis.progress_choice = 'arclength'; % {time,arclength,arcangle}
 settings_analysis.N = 101; % number of samples in one trial
 % Choose trial_0 = trial_n = X, to only show results of trial X
 settings_analysis.trial_0 = 1; % number of first trial to consider {1-12}
-settings_analysis.trial_n = 12; % number of final trial to consider {1-12}
+settings_analysis.trial_n = 1; % number of final trial to consider {1-12}
 settings_analysis.velocity_translation_threshold = 0.05; % threshold on translational velocity [m/s]
 settings_analysis.velocity_rotation_threshold = 0.35; % threshold on rotational velocity [rad/s]
 settings_analysis.artificial_variations = true;
 settings_analysis.application = 'contour'; % {contour,peg}
 
 % Parameters in optimal control problems
-parameters_OCP.weights.rms_error_orientation = 0.002; % [mm]
-parameters_OCP.weights.rms_error_translation = 2*pi/180; % 2 [degrees] converted to [rad]
+parameters_OCP.weights.rms_error_orientation = 2*pi/180; % 2 [degrees] converted to [rad]
+parameters_OCP.weights.rms_error_translation = 0.002; % [mm]
 parameters_OCP.weights.rms_error_force = 0.8; % [N]
 parameters_OCP.weights.rms_error_moment = 0.16; % [Nm]
 parameters_OCP.weights.L = 0.5; % [m] global scale to weigh the rotational and translational moving frame invariants
@@ -69,20 +88,22 @@ path_to_data = 'data/contour_following/reference';
 raw_data_reference = load_trials_in_folder(path_to_data);
 reference_data = preprocess_reference_data(raw_data_reference{1},settings_analysis);
 
-%% Calculate invariants %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Calculate invariants using optimal control (OCP) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Initialize OCP by constructing symbolic optimization problem
+% Specify OCP symbolically
 OCP = specify_optimal_control_problem(parameters_OCP,settings_analysis.trajectory_type);
 
-% Initialize results
+% Calculate invariants for each trial 
 nb_trials = settings_analysis.trial_n - settings_analysis.trial_0 + 1; % number of trials
-
 for trial=1:nb_trials
-    disp(['analyzing trial ' num2str(trial) '/' num2str(nb_trials) ' ...']);
+    disp(['calculating trial ' num2str(trial) '/' num2str(nb_trials) ' ...']);
 
-    % Call class with measurements
+    % Select measurements
     [measured_trajectory,progress] = select_measurements(measurement_data{trial},settings_analysis.trajectory_type);
-    OCP_results = OCP.calculate_invariants(measured_trajectory,progress);
+	stepsize = mean(diff(progress)); % stepsize
+
+	% Calculate invariants
+    OCP_results = OCP.calculate_invariants(measured_trajectory,stepsize);
 
     % Store results
     results.trials(trial).measured_trajectory = measured_trajectory;
@@ -91,11 +112,14 @@ for trial=1:nb_trials
     results.trials(trial).moving_frames = OCP_results.moving_frames;
 end
 
-disp('analyzing reference invariants:');
+disp('calculating reference trial');
 
-% Call class with measurements
+% Select measurements
 [reference_trajectory,progress] = select_measurements(reference_data,settings_analysis.trajectory_type);
-OCP_results = OCP.calculate_invariants(reference_trajectory,progress);
+stepsize = mean(diff(progress)); % stepsize
+
+% Calculate invariants
+OCP_results = OCP.calculate_invariants(reference_trajectory,stepsize);
 
 % Store results
 results.reference.measured_trajectory = reference_trajectory;

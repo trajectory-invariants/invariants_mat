@@ -8,7 +8,7 @@ ref_frame_force = settings_analysis.ref_frame_force;
 if strcmp(ref_point_motion,'tracker')
     pose = zeros(4,4,N);
     for i=1:N
-        pose(:,:,i) = T_reparam(:,:,i)*T_tcp_tr; % right-multiplication
+        pose(:,:,i) = T_reparam(:,:,i)*inverse_pose(T_tcp_tr); % right-multiplication
     end
 elseif strcmp(ref_point_motion,'tool_point')
     pose = T_reparam; % no change

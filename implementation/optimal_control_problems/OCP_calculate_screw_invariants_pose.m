@@ -172,11 +172,11 @@ classdef OCP_calculate_screw_invariants_pose < handle
             %obj.flag_first_time = 0;
         end
 
-        function optim_result = calculate_invariants(obj,meas_poses,progress)
+        function optim_result = calculate_invariants(obj,meas_poses,stepsize)
 
             %import casadi.*
             regul_origin_ASA = obj.parameters.regul_origin_ASA;
-            stepsize = mean(diff(progress)); % stepsize
+            
 
             measured_orientation = meas_poses(1:3,1:3,:);
             measured_position = squeeze(meas_poses(1:3,4,:))';
