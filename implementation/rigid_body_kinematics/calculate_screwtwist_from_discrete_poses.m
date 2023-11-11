@@ -1,4 +1,4 @@
-function twist = calculate_screwtwist_from_discrete_poses(R,p,dt)
+function twist = calculate_screwtwist_from_discrete_poses(T,dt)
 %%
 % In this code, screw twists are calculated based on discrete poses using
 % central differences.
@@ -12,8 +12,10 @@ function twist = calculate_screwtwist_from_discrete_poses(R,p,dt)
 %
 
 %% Initialization
-N = size(R,3);
+N = size(T,3);
 twist = zeros(N,6);
+R = T(1:3,1:3,:);
+p = squeeze(T(1:3,4,:));
 
 %% First sample
 % Rotation

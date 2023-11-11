@@ -23,84 +23,84 @@ N = size(T_o2_o1_init,3);
 T_o2_o1_new = zeros(4,4,N);
 
 if trial == 1
-    R_artificial = roty(-60);
+    R_artificial = rot_y(-60);
     %euler_angles = rotm2eul(R_artificial,'xyz')*180/pi;
     p_artificial = [-3 2 -1];
     for j = 1 : N
         T_o2_o1_new(:,:,j) = compose_pose_matrix(R_artificial,p_artificial)*T_o2_o1_init(:,:,j);
     end
 elseif trial == 2
-    R_artificial = rotz(180)*rotx(-30);
+    R_artificial = rot_z(180)*rot_x(-30);
     %euler_angles = rotm2eul(R_artificial,'xyz')*180/pi;
     p_artificial = [-1 2.5 -1];
     for j = 1 : N
         T_o2_o1_new(:,:,j) = compose_pose_matrix(R_artificial,p_artificial)*T_o2_o1_init(:,:,j);
     end
 elseif trial == 3
-    R_artificial = rotz(180)*roty(60);
+    R_artificial = rot_z(180)*rot_y(60);
     %euler_angles = rotm2eul(R_artificial,'xyz')*180/pi;
     p_artificial = [-1 2 -2];
     for j = 1 : N
         T_o2_o1_new(:,:,j) = compose_pose_matrix(R_artificial,p_artificial)*T_o2_o1_init(:,:,j);
     end
 elseif trial == 4
-    R_artificial = rotx(45);
+    R_artificial = rot_x(45);
     %euler_angles = rotm2eul(R_artificial,'xyz')*180/pi;
     p_artificial = [-3 2.5 -2];
     for j = 1 : N
         T_o2_o1_new(:,:,j) = compose_pose_matrix(R_artificial,p_artificial)*T_o2_o1_init(:,:,j);
     end
 elseif trial == 5
-    R_artificial = roty(90)*rotx(-45);
+    R_artificial = rot_y(90)*rot_x(-45);
     %euler_angles = rotm2eul(R_artificial,'xyz')*180/pi;
     p_artificial = [-1 0.5 0.5];
     for j = 1 : N
         T_o2_o1_new(:,:,j) = compose_pose_matrix(R_artificial,p_artificial)*T_o2_o1_init(:,:,j);
     end
 elseif trial == 6
-    R_artificial = roty(90)*rotz(45);
+    R_artificial = rot_y(90)*rot_z(45);
     %euler_angles = rotm2eul(R_artificial,'xyz')*180/pi;
     p_artificial = [1 0 0.5];
     for j = 1 : N
         T_o2_o1_new(:,:,j) = compose_pose_matrix(R_artificial,p_artificial)*T_o2_o1_init(:,:,j);
     end
 elseif trial == 7
-    R_artificial = rotx(-90)*rotz(45);
+    R_artificial = rot_x(-90)*rot_z(45);
     %euler_angles = rotm2eul(R_artificial,'xyz')*180/pi;
     p_artificial = [1 0.5 -0.5];
     for j = 1 : N
         T_o2_o1_new(:,:,j) = compose_pose_matrix(R_artificial,p_artificial)*T_o2_o1_init(:,:,j);
     end
 elseif trial == 8
-    R_artificial = roty(90)*rotz(225);
+    R_artificial = rot_y(90)*rot_z(225);
     %euler_angles = rotm2eul(R_artificial,'xyz')*180/pi;
     p_artificial = [-1 0 -0.5];
     for j = 1 : N
         T_o2_o1_new(:,:,j) = compose_pose_matrix(R_artificial,p_artificial)*T_o2_o1_init(:,:,j);
     end
 elseif trial == 9
-    R_artificial = rotx(60)*rotz(210);
+    R_artificial = rot_x(60)*rot_z(210);
     %euler_angles = rotm2eul(R_artificial,'xyz')*180/pi;
     p_artificial = [1 -2 2];
     for j = 1 : N
         T_o2_o1_new(:,:,j) = compose_pose_matrix(R_artificial,p_artificial)*T_o2_o1_init(:,:,j);
     end
 elseif trial == 10
-    R_artificial = roty(45)*rotz(-60);
+    R_artificial = rot_y(45)*rot_z(-60);
     %euler_angles = rotm2eul(R_artificial,'xyz')*180/pi;
     p_artificial = [3 -2 2];
     for j = 1 : N
         T_o2_o1_new(:,:,j) = compose_pose_matrix(R_artificial,p_artificial)*T_o2_o1_init(:,:,j);
     end
 elseif trial == 11
-    R_artificial = roty(-45)*rotz(-180);
+    R_artificial = rot_y(-45)*rot_z(-180);
     %euler_angles = rotm2eul(R_artificial,'xyz')*180/pi;
     p_artificial = [3 -1.5 1];
     for j = 1 : N
         T_o2_o1_new(:,:,j) = compose_pose_matrix(R_artificial,p_artificial)*T_o2_o1_init(:,:,j);
     end
 elseif trial == 12
-    R_artificial = rotx(-60)*rotz(-45);
+    R_artificial = rot_x(-60)*rot_z(-45);
     %euler_angles = rotm2eul(R_artificial,'xyz')*180/pi;
     p_artificial = [1 -1.5 1];
     for j = 1 : N

@@ -24,14 +24,14 @@ mass = 1.96138/9.806; % mass of tool in [kg] determined with a least-squares cal
 %%
 if strcmp(configuration,'a')
     % Rotation {tcp} wrt {tr}
-    R_tcp_tr = rotx(135);
+    R_tcp_tr = rot_x(135);
     % Position {tcp} wrt {tr}
     p_tcp_tr = [0,-99.69,35.5]./1000;
     % Pose {tcp} wrt {tr}
     T_tcp_tr = [R_tcp_tr,p_tcp_tr';0 0 0 1];
     
     % Rotation {tcp} wrt {lc}
-    R_tcp_lc = rotz(-90)*rotx(225); % {lc} towards {tcp} R1 * R2
+    R_tcp_lc = rot_z(-90)*rot_x(225); % {lc} towards {tcp} R1 * R2
     % Position {tcp} wrt {lc}
     p_tcp_lc = [0,0,-55.17]./1000;
     % Pose {tcp} wrt {lc}
@@ -47,14 +47,14 @@ if strcmp(configuration,'a')
 
 elseif strcmp(configuration,'b')
     % Rotation {tcp} wrt {tr}
-    R_tcp_tr = roty(180)*rotx(135); % {tr} towards {tcp} R1 * R2
+    R_tcp_tr = rot_y(180)*rot_x(135); % {tr} towards {tcp} R1 * R2
     % Position {tcp} wrt {tr}
     p_tcp_tr = [0,-99.69,35.5]./1000;
     % Pose {tcp} wrt {tr}
     T_tcp_tr = [R_tcp_tr,p_tcp_tr';0 0 0 1];
     
     % Rotation {tcp} wrt {lc}
-    R_tcp_lc = rotz(-90)*rotx(225); % {lc} towards {tcp} R1 * R2
+    R_tcp_lc = rot_z(-90)*rot_x(225); % {lc} towards {tcp} R1 * R2
     % Position {tcp} wrt {lc}
     p_tcp_lc = [0,0,-55.17]./1000;
     % Pose {tcp} wrt {lc}
@@ -70,14 +70,14 @@ elseif strcmp(configuration,'b')
 
 elseif strcmp(configuration,'c')
     % Rotation {tcp} wrt {tr}
-    R_tcp_tr = rotx(135);
+    R_tcp_tr = rot_x(135);
     % Position {tcp} wrt {tr}
     p_tcp_tr = [0,-261.69,35.5]./1000;
     % Pose {tcp} wrt {tr}
     T_tcp_tr = [R_tcp_tr,p_tcp_tr';0 0 0 1];
     
     % Rotation {tcp} wrt {lc}
-    R_tcp_lc = rotz(-90)*rotx(225); % {lc} towards {tcp} R1 * R2
+    R_tcp_lc = rot_z(-90)*rot_x(225); % {lc} towards {tcp} R1 * R2
     % Position {tcp} wrt {lc}
     p_tcp_lc = [0,0,-55.17]./1000;
     % Pose {tcp} wrt {lc}
@@ -93,14 +93,14 @@ elseif strcmp(configuration,'c')
 
 elseif strcmp(configuration,'d')
     % Rotation {tcp} wrt {tr}
-    R_tcp_tr = roty(90)*rotx(135); % {tr} towards {tcp} R1 * R2
+    R_tcp_tr = rot_y(90)*rot_x(135); % {tr} towards {tcp} R1 * R2
     % Position {tcp} wrt {tr}
     p_tcp_tr = [0,-261.69,35.5]./1000;
     % Pose {tcp} wrt {tr}
     T_tcp_tr = [R_tcp_tr,p_tcp_tr';0 0 0 1];
     
     % Rotation {tcp} wrt {lc}
-    R_tcp_lc = rotz(-90)*rotx(225); % {lc} towards {tcp} R1 * R2
+    R_tcp_lc = rot_z(-90)*rot_x(225); % {lc} towards {tcp} R1 * R2
     % Position {tcp} wrt {lc}
     p_tcp_lc = [0,0,-55.17]./1000;
     % Pose {tcp} wrt {lc}
@@ -116,14 +116,14 @@ elseif strcmp(configuration,'d')
 
 elseif strcmp(configuration,'e')
     % Rotation {tcp} wrt {tr}
-    R_tcp_tr = roty(180)*rotx(135); % {tr} towards {tcp} R1 * R2
+    R_tcp_tr = rot_y(180)*rot_x(135); % {tr} towards {tcp} R1 * R2
     % Position {tcp} wrt {tr}
     p_tcp_tr = [0,-261.69,35.5]./1000;
     % Pose {tcp} wrt {tr}
     T_tcp_tr = [R_tcp_tr,p_tcp_tr';0 0 0 1];
     
     % Rotation {tcp} wrt {lc}
-    R_tcp_lc = rotz(-90)*rotx(225); % {lc} towards {tcp} R1 * R2
+    R_tcp_lc = rot_z(-90)*rot_x(225); % {lc} towards {tcp} R1 * R2
     % Position {tcp} wrt {lc}
     p_tcp_lc = [0,0,-55.17]./1000;
     % Pose {tcp} wrt {lc}
@@ -139,14 +139,14 @@ elseif strcmp(configuration,'e')
 
 elseif strcmp(configuration,'f')
     % Rotation {tcp} wrt {tr}
-    R_tcp_tr = roty(-90)*rotx(135); % {tr} towards {tcp} R1 * R2
+    R_tcp_tr = rot_y(-90)*rot_x(135); % {tr} towards {tcp} R1 * R2
     % Position {tcp} wrt {tr}
     p_tcp_tr = [0,-261.69,35.5]./1000;
     % Pose {tcp} wrt {tr}
     T_tcp_tr = [R_tcp_tr,p_tcp_tr';0 0 0 1];
     
     % Rotation {tcp} wrt {lc}
-    R_tcp_lc = rotz(-90)*rotx(225); % {lc} towards {tcp} R1 * R2
+    R_tcp_lc = rot_z(-90)*rot_x(225); % {lc} towards {tcp} R1 * R2
     % Position {tcp} wrt {lc}
     p_tcp_lc = [0,0,-55.17]./1000;
     % Pose {tcp} wrt {lc}

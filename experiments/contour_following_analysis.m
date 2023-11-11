@@ -53,11 +53,12 @@ parameters_OCP.positive_obj_invariant = 0;
 parameters_OCP.positive_mov_invariant = 0;
 
 % Settings - plots
-settings_plots.bool_reference_invariants = 1;              % {0,1}
-settings_plots.bool_visualize_trials = 0;                  % {0,1}
-settings_plots.bool_visualize_reconstruction_errors = 0;   % {0,1}
-settings_plots.bool_visualize_summary = 1;                 % {0,1}
-settings_plots.bool_paper_plots = 0;                       % {0,1}
+settings_plots.plot_paper_figures = 0;                     % {0,1}
+settings_plots.plot_reference_results = 1;                 % {0,1}
+settings_plots.plot_summary_invariants = 1;                % {0,1}
+settings_plots.plot_all_trials_movingframes = 0;           % {0,1}
+settings_plots.plot_all_trials_trajectory_errors = 1;      % {0,1}
+settings_plots.plot_all_trials_invariants = 0;             % {0,1}
 
 %% Load and preprocess data %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % The data has the following structure:
@@ -88,7 +89,7 @@ path_to_data = 'data/contour_following/reference';
 raw_data_reference = load_trials_in_folder(path_to_data);
 reference_data = preprocess_reference_data(raw_data_reference{1},settings_analysis);
 
-%% Calculate invariants using optimal control (OCP) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Calculate invariants of all measured data using optimal control (OCP) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Specify OCP symbolically
 OCP = specify_optimal_control_problem(parameters_OCP,settings_analysis.trajectory_type);
@@ -106,11 +107,14 @@ for trial=1:nb_trials
     OCP_results = OCP.calculate_invariants(measured_trajectory,stepsize);
 
     % Store results
+    results.trials(trial).progress = progress;
     results.trials(trial).measured_trajectory = measured_trajectory;
     results.trials(trial).invariants = OCP_results.invariants;
     results.trials(trial).reconstructed_trajectory = OCP_results.reconstruction;
     results.trials(trial).moving_frames = OCP_results.moving_frames;
 end
+
+%% Calculate invariants of reference trial using optimal control (OCP) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 disp('calculating reference trial');
 
@@ -122,6 +126,7 @@ stepsize = mean(diff(progress)); % stepsize
 OCP_results = OCP.calculate_invariants(reference_trajectory,stepsize);
 
 % Store results
+results.reference.progress = progress;
 results.reference.measured_trajectory = reference_trajectory;
 results.reference.invariants = OCP_results.invariants;
 results.reference.reconstructed_trajectory = OCP_results.reconstruction;
@@ -130,4 +135,5 @@ results.reference.moving_frames = OCP_results.moving_frames;
 %% Plotting results %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 plot_all_results(results,settings_analysis,settings_plots)
+
 save_results(results,settings_analysis,settings_plots)

@@ -23,7 +23,7 @@ for trial=trial_0:trial_n
     wrench_unq = wrench_raw(index_unq,:);
 
     % Rotate the world frame by -90 degrees around the X-axis so that the Z-axis is pointing upwards in vertical direction
-    deltaR = inv(rotx(-90));
+    deltaR = inv(rot_x(-90));
     deltaT = [deltaR,[0,0,0]';[0,0,0,1]];
     for j = 1 : size(T_unq,3)
         T_unq(:,:,j) = deltaT*T_unq(:,:,j);
