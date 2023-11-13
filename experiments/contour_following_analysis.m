@@ -4,10 +4,10 @@
 % The following settings need to be chosen to generate the figures of the paper
 %
 % Figure 6: 
-%	Figure 9a: trajectory_type = 'pose', ref_point_motion = 'tracker'
-%	Figure 9b: trajectory_type = 'rotation', ref_point_motion = 'tracker'
-%	Figure 9c: trajectory_type = 'position', ref_point_motion = 'tracker'
-%	Figure 9d: trajectory_type = 'position', ref_point_motion = 'tracker'
+%	Figure 6a: trajectory_type = 'pose', ref_point_motion = 'tracker'
+%	Figure 6b: trajectory_type = 'rotation', ref_point_motion = 'tracker'
+%	Figure 6c: trajectory_type = 'position', ref_point_motion = 'tracker'
+%	Figure 6d: trajectory_type = 'position', ref_point_motion = 'tracker'
 % Figure 7: 
 %	Figure 7a: trajectory_type = 'wrench', ref_point_motion = 'tracker'
 %	Figure 7b: trajectory_type = 'force', ref_point_motion = 'tracker'
@@ -34,7 +34,7 @@ settings_analysis.progress_choice = 'arclength'; % {time,arclength,arcangle}
 settings_analysis.N = 101; % number of samples in one trial
 % Choose trial_0 = trial_n = X, to only show results of trial X
 settings_analysis.trial_0 = 1; % number of first trial to consider {1-12}
-settings_analysis.trial_n = 1; % number of final trial to consider {1-12}
+settings_analysis.trial_n = 2; % number of final trial to consider {1-12}
 settings_analysis.velocity_translation_threshold = 0.05; % threshold on translational velocity [m/s]
 settings_analysis.velocity_rotation_threshold = 0.35; % threshold on rotational velocity [rad/s]
 settings_analysis.artificial_variations = true;
@@ -42,7 +42,7 @@ settings_analysis.application = 'contour'; % {contour,peg}
 
 % Parameters in optimal control problems
 parameters_OCP.weights.rms_error_orientation = 2*pi/180; % 2 [degrees] converted to [rad]
-parameters_OCP.weights.rms_error_translation = 0.002; % [mm]
+parameters_OCP.weights.rms_error_translation = 0.002; % [m]
 parameters_OCP.weights.rms_error_force = 0.8; % [N]
 parameters_OCP.weights.rms_error_moment = 0.16; % [Nm]
 parameters_OCP.weights.L = 0.5; % [m] global scale to weigh the rotational and translational moving frame invariants
@@ -53,12 +53,12 @@ parameters_OCP.positive_obj_invariant = 0;
 parameters_OCP.positive_mov_invariant = 0;
 
 % Settings - plots
-settings_plots.plot_paper_figures = 0;                     % {0,1}
+settings_plots.plot_paper_figures = 1;                     % {0,1}
 settings_plots.plot_reference_results = 1;                 % {0,1}
 settings_plots.plot_summary_invariants = 1;                % {0,1}
-settings_plots.plot_all_trials_movingframes = 0;           % {0,1}
+settings_plots.plot_all_trials_movingframes = 1;           % {0,1}
 settings_plots.plot_all_trials_trajectory_errors = 1;      % {0,1}
-settings_plots.plot_all_trials_invariants = 0;             % {0,1}
+settings_plots.plot_all_trials_invariants = 1;             % {0,1}
 
 %% Load and preprocess data %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % The data has the following structure:
@@ -89,7 +89,7 @@ path_to_data = 'data/contour_following/reference';
 raw_data_reference = load_trials_in_folder(path_to_data);
 reference_data = preprocess_reference_data(raw_data_reference{1},settings_analysis);
 
-%% Calculate invariants of all measured data using optimal control (OCP) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Calculate invariants of all measured data using optimal control (OCP) %%
 
 % Specify OCP symbolically
 OCP = specify_optimal_control_problem(parameters_OCP,settings_analysis.trajectory_type);
@@ -112,9 +112,10 @@ for trial=1:nb_trials
     results.trials(trial).invariants = OCP_results.invariants;
     results.trials(trial).reconstructed_trajectory = OCP_results.reconstruction;
     results.trials(trial).moving_frames = OCP_results.moving_frames;
+    results.trials(trial).pose = measurement_data{trial}.pose;
 end
 
-%% Calculate invariants of reference trial using optimal control (OCP) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Calculate invariants of reference trial using optimal control (OCP) %%%%
 
 disp('calculating reference trial');
 
@@ -131,6 +132,7 @@ results.reference.measured_trajectory = reference_trajectory;
 results.reference.invariants = OCP_results.invariants;
 results.reference.reconstructed_trajectory = OCP_results.reconstruction;
 results.reference.moving_frames = OCP_results.moving_frames;
+results.reference.pose = reference_data.pose;
 
 %% Plotting results %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

@@ -63,12 +63,12 @@ if strcmp(referencepoint,'force_sensor')
         T_isa_data(:,:,k) = pose(:,:,k)*T_isa_data(:,:,k); 
     end
 end
+
 % Plot ISA axes
 plots_screw_axes(T_isa_data,length_screw_back,length_screw_front,darkred,width_axis,steps_isa);
 
 % Plot ISA frames
 plot_isa_frames(T_isa_data,arrow_length_isa,arrow_length_normal_binormal,arrow_width_isa,arrow_width_normal_binormal,steps_isa,darkred,green,blue)
-
 
 %% Plot styling
 set(gcf,'units','normalized','outerposition',[0 0.04 0.7 0.74]);
