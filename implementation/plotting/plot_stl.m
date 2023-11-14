@@ -18,29 +18,29 @@ function plot_stl(filename,R,location,scale,filecolor,filealpha,edgealpha)
 %     [TR,~,~,~]  = stlread(filename);
 %     vertices    = TR.Points;
 %     faces       = TR.ConnectivityList;
-%     
+%
 %     if nargin < 7
 %         edgealpha = filealpha*0.2;
 %     end
 %     for j = 1 : length(vertices)
 %         vertices_transformed(j,:) = R*vertices(j,:)'.*scale+location';
 %     end
-%     
+%
 %     patch('Faces',faces,'Vertices',vertices_transformed,'FaceColor',filecolor,...
 %         'EdgeColor','k','FaceAlpha',filealpha,'EdgeAlpha',edgealpha); % add edgealpha as an input parameter
 % else
-    [TR,~,~,~]  = stlread(filename);
-    vertices    = TR.Points;
-    faces       = TR.ConnectivityList;
-    
-    for j = 1 : length(vertices)
-        vertices_transformed(j,:) = R*vertices(j,:)'.*scale+location';
-    end
-      if nargin < 7
-        edgealpha = filealpha*0.5;
-    end
-    
-    patch('Faces',faces,'Vertices',vertices_transformed,'FaceColor',filecolor,...
-        'EdgeColor','none','FaceAlpha',filealpha,'EdgeAlpha',edgealpha);
+[TR,~,~,~]  = stlread(filename);
+vertices    = TR.Points;
+faces       = TR.ConnectivityList;
+
+for j = 1 : length(vertices)
+    vertices_transformed(j,:) = R*vertices(j,:)'.*scale+location';
+end
+if nargin < 7
+    edgealpha = filealpha*0.5;
+end
+
+patch('Faces',faces,'Vertices',vertices_transformed,'FaceColor',filecolor,...
+    'EdgeColor','none','FaceAlpha',filealpha,'EdgeAlpha',edgealpha);
 % end
 

@@ -19,4 +19,3 @@ R_reparam = interp_rot(progress_wrt_time,R_raw,progress_equidistant);
 T_reparam = compose_pose_matrix(R_reparam,p_reparam);
 wrench_reparam = interp1(progress_wrt_time,wrench_raw,progress_equidistant);
 velocity_profile = [time_,progress_wrt_time];
-end

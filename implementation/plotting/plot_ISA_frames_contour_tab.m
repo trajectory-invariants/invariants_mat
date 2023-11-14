@@ -173,8 +173,8 @@ if strcmp(viewpoint,'body')
     if strcmp(application,'contour')
         % Plot stl files in correct position and orientation
         if strcmp(trial,'ref') % the reference case
-            plot_stl(['data/stl/contour/configuration-a/tool-a-bearings.STL'],R_visual,zeros(1,3),0.001,bearings_color,0.4);
-            plot_stl(['data/stl/contour/configuration-a/tool-a-print4.STL'],R_visual,zeros(1,3),0.001,part4_color,0.4);
+            plot_stl('data/stl/contour/configuration-a/tool-a-bearings.STL',R_visual,zeros(1,3),0.001,bearings_color,0.4);
+            plot_stl('data/stl/contour/configuration-a/tool-a-print4.STL',R_visual,zeros(1,3),0.001,part4_color,0.4);
         elseif ~strcmp(trial,'ref') % not the reference case
             plot_stl(['data/stl/contour/configuration-',sensor_id(trial),'/tool-',sensor_id(trial),'-bearings.STL'],R_visual,zeros(1,3),0.001,bearings_color,0.4);
             plot_stl(['data/stl/contour/configuration-',sensor_id(trial),'/tool-',sensor_id(trial),'-print4.STL'],R_visual,zeros(1,3),0.001,part4_color,0.4);
