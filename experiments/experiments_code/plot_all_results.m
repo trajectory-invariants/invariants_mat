@@ -10,6 +10,7 @@ invars_data_ref = results.reference.invariants;
 progress_ref = results.reference.progress;
 T_isa_data_ref = results.reference.moving_frames;
 pose_ref = results.reference.pose;
+trial_0 = settings_analysis.trial_0;
 
 % Gather specific results from all trials in a multi-dimensional matrix
 nb_trials = settings_analysis.trial_n - settings_analysis.trial_0 + 1; % number of trials
@@ -29,7 +30,7 @@ if settings_plots.plot_all_trials_invariants
     for trial=1:nb_trials
         progress= results.trials(trial).progress;
         invars_data = results.trials(trial).invariants;
-        thistab = uitab(tabgroup_data_inv,'Title',['trial = ',num2str(trial)]);
+        thistab = uitab(tabgroup_data_inv,'Title',['trial = ',num2str(trial+trial_0-1)]);
         plot_screw_invariants(progress,invars_data,datatype,parameterization,thistab);
     end
 end
@@ -39,19 +40,19 @@ if settings_plots.plot_all_trials_movingframes
     figure('Name',['ISA frames of ',datatype],'Color',[1 1 1],'NumberTitle','off');
     tabgroup_data_ISA = uitabgroup;
 
-    if bool_plot_reference
-        thistab = uitab(tabgroup_data_ISA,'Title','reference');
-        viewpoint = 'world';
-        referencepoint = 'tracker';
-        plot_ISA_frames_contour_tab(T_isa_data_ref,pose_ref,'ref',viewpoint,referencepoint,datatype,parameterization,settings_analysis.application,thistab,settings_analysis.wrench_synthetic,settings_analysis.path_to_data_folder)
+    for trial=1:nb_trials
+        T_isa = results.trials(trial).moving_frames;
+        pose_tcp = results.trials(trial).pose;
+        thistab = uitab(tabgroup_data_ISA,'Title',['trial = ',num2str(trial+trial_0-1)]);
+        plot_ISA_frames_tab(T_isa,pose_tcp,trial+trial_0-1,thistab)
     end
 
-    for trial=1:nb_trials
-        pose= results.trials(trial).measured_trajectory;
-        T_isa = results.trials(trial).moving_frames;
-        thistab = uitab(tabgroup_data_ISA,'Title',['trial = ',num2str(trial+trial_0-1)]);
-        plot_ISA_frames_contour_tab(T_isa,pose,trial+trial_0-1,viewpoint,referencepoint,parameterization,application,thistab,wrenchtype,path_to_data_folder)
+    if bool_plot_reference
+        thistab = uitab(tabgroup_data_ISA,'Title','reference');
+        plot_ISA_frames_tab(T_isa_data_ref,pose_ref,trial+trial_0-1,thistab)
     end
+
+
 end
 
 %% Plot invariants - summary
@@ -95,7 +96,7 @@ if bool_paper_plots
         axis_font_size = 24;
         label_font_size = 29;
         step_size = 2;
-        plot_ISA_frames_contour(T_isa_data(:,:,:,trial),pose(:,:,:,trial),trial+trial_0-1,viewpoint,referencepoint,'motion (Fig. 9a)',parameterization,application,view_fig,axis_font_size,label_font_size,step_size,wrenchtype)
+        plot_figure10(T_isa_data(:,:,:,trial),pose(:,:,:,trial),trial+trial_0-1,viewpoint,referencepoint,'motion (Fig. 9a)',parameterization,application,view_fig,axis_font_size,label_font_size,step_size,wrenchtype)
         exportgraphics(gcf,['figures/ISA_frames_',datatype,'_',viewpoint,'_',referencepoint,'_trial_',num2str(trial+trial_0-1),'.pdf'],'ContentType','vector');
     end
 
@@ -106,7 +107,7 @@ if bool_paper_plots
         axis_font_size = 17;
         label_font_size = 22;
         step_size = 10;
-        plot_ISA_frames_contour(T_isa_data(:,:,:,trial),pose(:,:,:,trial),trial+trial_0-1,viewpoint,referencepoint,'wrench (Fig. 9c)',parameterization,application,view_fig,axis_font_size,label_font_size,step_size,wrenchtype)
+        plot_figure10(T_isa_data(:,:,:,trial),pose(:,:,:,trial),trial+trial_0-1,viewpoint,referencepoint,'wrench (Fig. 9c)',parameterization,application,view_fig,axis_font_size,label_font_size,step_size,wrenchtype)
         exportgraphics(gcf,['figures/ISA_frames_',datatype,'_',viewpoint,'_',referencepoint,'_trial_',num2str(trial+trial_0-1),'.pdf'],'ContentType','vector');
     end
 
@@ -117,7 +118,7 @@ if bool_paper_plots
         axis_font_size = 34;
         label_font_size = 40;
         step_size = 3;
-        plot_ISA_frames_contour(T_isa_data(:,:,:,trial),pose(:,:,:,trial),trial+trial_0-1,viewpoint,referencepoint,'wrench (Fig. 9b)',parameterization,application,view_fig,axis_font_size,label_font_size,step_size,wrenchtype)
+        plot_figure10(T_isa_data(:,:,:,trial),pose(:,:,:,trial),trial+trial_0-1,viewpoint,referencepoint,'wrench (Fig. 9b)',parameterization,application,view_fig,axis_font_size,label_font_size,step_size,wrenchtype)
         axis equal;
         exportgraphics(gcf,['figures/ISA_frames_',datatype,'_',viewpoint,'_',referencepoint,'_trial_',num2str(trial+trial_0-1),'.pdf'],'ContentType','vector');
     end

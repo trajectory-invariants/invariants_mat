@@ -1,14 +1,14 @@
-% This script allows calculating invariant descriptors and moving frames 
+% This script allows calculating invariant descriptors and moving frames
 % from the recorded data of the contour following experiment
 %
 % The following settings need to be chosen to generate the figures of the paper
 %
-% Figure 6: 
+% Figure 6:
 %	Figure 6a: trajectory_type = 'pose', ref_point_motion = 'tracker'
 %	Figure 6b: trajectory_type = 'rotation', ref_point_motion = 'tracker'
 %	Figure 6c: trajectory_type = 'position', ref_point_motion = 'tracker'
 %	Figure 6d: trajectory_type = 'position', ref_point_motion = 'tracker'
-% Figure 7: 
+% Figure 7:
 %	Figure 7a: trajectory_type = 'wrench', ref_point_motion = 'tracker'
 %	Figure 7b: trajectory_type = 'force', ref_point_motion = 'tracker'
 %	Figure 7c: trajectory_type = 'moment', ref_point_motion = 'tracker'
@@ -49,7 +49,7 @@ parameters_OCP.weights.L = 0.5; % [m] global scale to weigh the rotational and t
 parameters_OCP.regul_origin_ASA = 10^(-10); % Used to regulate the origin of the ASA-frame which is used for the initialization of the OCP
 parameters_OCP.max_iters = 500; % maximum number of iterations
 parameters_OCP.window.window_length = settings_analysis.N;
-parameters_OCP.positive_obj_invariant = 0; 
+parameters_OCP.positive_obj_invariant = 0;
 parameters_OCP.positive_mov_invariant = 0;
 
 % Settings - plots
@@ -94,16 +94,16 @@ reference_data = preprocess_reference_data(raw_data_reference{1},settings_analys
 % Specify OCP symbolically
 OCP = specify_optimal_control_problem(parameters_OCP,settings_analysis.trajectory_type);
 
-% Calculate invariants for each trial 
+% Calculate invariants for each trial
 nb_trials = settings_analysis.trial_n - settings_analysis.trial_0 + 1; % number of trials
 for trial=1:nb_trials
     disp(['calculating trial ' num2str(trial) '/' num2str(nb_trials) ' ...']);
 
     % Select measurements
     [measured_trajectory,progress] = select_measurements(measurement_data{trial},settings_analysis.trajectory_type);
-	stepsize = mean(diff(progress)); % stepsize
+    stepsize = mean(diff(progress)); % stepsize
 
-	% Calculate invariants
+    % Calculate invariants
     OCP_results = OCP.calculate_invariants(measured_trajectory,stepsize);
 
     % Store results

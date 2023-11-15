@@ -1,4 +1,4 @@
-function plot_ISA_frames_contour(T_isa, pose, trial, viewpoint, referencepoint, datatype, parameterization, application, view_fig, axis_font_size, label_font_size, step_size, wrenchtype)
+function plot_figure10(T_isa, pose, trial, viewpoint, referencepoint, datatype, parameterization, application, view_fig, axis_font_size, label_font_size, step_size, wrenchtype)
 
 figure('Name',['ISA frames of ',datatype],'Color',[1 1 1],'NumberTitle','off'); hold on; axis equal;
 set(groot,'defaultAxesTickLabelInterpreter','latex');

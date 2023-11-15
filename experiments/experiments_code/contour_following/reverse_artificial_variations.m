@@ -1,4 +1,4 @@
-function [R_o2_o1_new,p_o2_o1_new,T_o2_o1_new] = reverse_artificial_variations(R_o2_o1_init,p_o2_o1_init,trial)
+function [R_o2_o1_new,p_o2_o1_new,T_o2_o1_new] = reverse_artificial_variations(T_o2_o1_init,trial)
 %%
 % This function reverses the applied artificial transformations by function "make_artificial_variations".
 
@@ -12,7 +12,7 @@ function [R_o2_o1_new,p_o2_o1_new,T_o2_o1_new] = reverse_artificial_variations(R
 %     pose_meas:          pose after reversing artificial transformation       [4x4xN]
 
 %%
-T_o2_o1_init = compose_pose_matrix(R_o2_o1_init,p_o2_o1_init);
+%T_o2_o1_init = compose_pose_matrix(R_o2_o1_init,p_o2_o1_init);
 N = size(T_o2_o1_init,3);
 T_o2_o1_new = zeros(4,4,N);
 
