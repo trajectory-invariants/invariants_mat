@@ -1,24 +1,31 @@
-Matlab code for calculating invariant descriptors of trajectories using optimal control. 
+Matlab code to support the robust calculation of invariant trajectory descriptors using optimal control. 
 
 A **Python version** of this package is [under active development](https://gitlab.kuleuven.be/robotgenskill/public_code/invariants_py).
 
 ## Features
 
-Two types of descriptors are supported:
-1. **Vector invariants** (i.e. Frenet-Serret invariants of curvature and torsion) which can be applied to position, orientation, translational velocity, rotational velocity, force and moment trajectories
-2. **Screw invariants** (based on the instantaneous screw axis) which can be applied to screw twist and wrench trajectories
+The following type of descriptors can be calculated using optimal control:
+1. **Vector invariants** are a generalization of the Frenet-Serret invariants for point curves based on differential-geometric properties such as curvature and torsion. They can be calculated for position trajectories, orientation trajectories, translational velocity trajectories, rotational velocity trajectories, force trajectories, and moment trajectories. 
+2. **Screw invariants** are defined based on the concept of the Instantaneous Screw Axis (ISA) for motion and force. This results in them being independent of reference point. The screw invariants can be calculated for pose trajectories, screw twist trajectories, and wrench trajectories. 
 
-In addition to calculating the invariants, this toolbox supports:
+In addition to calculating the invariant descriptors, this toolbox supports:
 - robust calculation of the corresponding moving frames: *Frenet-Serret frames* for the vector invariants and *Instantaneous Screw Axis frames* for the screw invariants
 - reconstruction of trajectories from the invariant descriptor
 
-
 ## Installation
 
-Download [**CasADi 3.6.3**](https://github.com/casadi/casadi/releases/tag/3.6.3) according to your version of Matlab and operating system. Unzip the downloaded package and place the resulting folder inside the `invariants-mat/libraries/` directory. 
+Download [**CasADi 3.6.3**](https://github.com/casadi/casadi/releases/tag/3.6.3) according to your version of Matlab and operating system. Unzip the downloaded package and place the resulting folder inside the `invariants_mat/libraries/` directory. 
 
 As an example, if you are in Windows and using Matlab >R2016a, the result should be that CasADi can be found here:
-`invariants-mat/libraries/casadi-windows-matlabR2016a-v3.6.3`
+`invariants_mat/libraries/casadi-windows-matlabR2016a-v3.6.3`
 
-## 
+## Upcoming improvements
+- **More calculation examples** will be added that show how to calculate different invariant descriptors on single trajectories and on special motions. Expected release: ~~end of October 2023.~~ *Update expected release: 20 November 2023**
+- Functionality will be added to **enable shape-preserving trajectory adaptation** using the approach described [here](https://doi.org/10.1016/j.robot.2019.103291). Expected release: end of November 2023.
+- A **Python version** is currently under active development, referred to as [invariants_py](https://gitlab.kuleuven.be/robotgenskill/public_code/invariants_py). It will mirror all functionality and in addition focus on extremely fast calculation times by incorporating the [Fatrop solver](https://gitlab.kuleuven.be/robotgenskill/fatrop/fatrop).
+
+### Contributors 
+
 Main contributors: Maxim Vochten, Ali Mousavi, Arno Verduyn, Riccardo Burlizzi (KU Leuven)
+
+For questions and collaborations: maxim(dot)vochten(at)kuleuven(dot)be
