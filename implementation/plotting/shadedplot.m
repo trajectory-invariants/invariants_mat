@@ -35,7 +35,9 @@ function [ha hb hc] = shadedplot(x, y1, y2, varargin)
 %     hb = shadedplot(x3, y3, y4, [0.7 0.7 1]); %second area is blue
 %     hold off
 %
-% Adapted from Dave Van Tol (2022). Shaded area plot (https://www.mathworks.com/matlabcentral/fileexchange/18738-shaded-area-plot), MATLAB Central File Exchange. Retrieved November 5, 2022.
+% Adapted from Dave Van Tol (2022) Shaded area plot 
+% (https://www.mathworks.com/matlabcentral/fileexchange/18738-shaded-area-plot), 
+% MATLAB Central File Exchange. Retrieved November 5, 2022.
 
 % plot the shaded area
 y = [y1; (y2-y1)]';

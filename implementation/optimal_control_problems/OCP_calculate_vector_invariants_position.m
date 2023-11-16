@@ -148,7 +148,7 @@ classdef OCP_calculate_vector_invariants_position < handle
             %obj.flag_first_time = 0;
         end
 
-        function optimization_result = calculate_invariants(obj,measured_position,stepsize, invariants_init, FS_init)
+        function optimization_result = calculate_invariants(obj,measured_position,stepsize)
             %% Initialization of invariants and FS frames
 
             N = obj.window_length;

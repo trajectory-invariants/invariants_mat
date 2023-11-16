@@ -12,6 +12,8 @@ classdef OCP_calculate_screw_invariants_wrench < handle
         param_positive_mov_invariant;
         window_length; % window size
         %T_isa_0; % ISA frame at start of window
+        parameters;
+
         %parameterization;
         %sol; % previous solution
         %flag_first_time; % boolean to indicate first window
@@ -182,14 +184,18 @@ classdef OCP_calculate_screw_invariants_wrench < handle
             obj.window_length = window_length;
             obj.P.h = h;
             obj.opti = opti;
+            obj.parameters = parameters;
+
             %obj.flag_first_time = 0;
         end
 
-        function optim_result = calculate_invariants(obj,meas_twist,stepsize,parameters)
+        function optim_result = calculate_invariants(obj,meas_twist,stepsize)
 
             N = obj.window_length;
+            regul_origin_ASA = obj.parameters.regul_origin_ASA;
 
-            [invariants_init, ISA_frame_init] = initialize_invariants_screw(meas_twist,obj.param_positive_obj_invariant,parameters);
+
+            [invariants_init, ISA_frame_init] = initialize_invariants_screw(meas_twist,obj.param_positive_obj_invariant,regul_origin_ASA);
 
             measured_twist_rotation = meas_twist(:,1:3);
             measured_twist_translation = meas_twist(:,4:6);

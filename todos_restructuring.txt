@@ -1,0 +1,13 @@
+hernoem figures/ to experiments/results/
+hernoem output/ naar results/
+
+
+
+
+increasing epsilon for translation makes the problem harder to solve, why?
+(Figure 6a)
+--> push to Arno
+
+make an example with receding window
+
+waarom delen we door de karakteristieke lengte?
