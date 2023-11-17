@@ -4,7 +4,7 @@ function T_transform = design_global_pose_transformation_matrix(measured_pose)
 % The matrix T_transform is build from smaller elementary operations (T1,
 % T2, T3, T4)
     T1_inverse = inverse_pose([eye(3),measured_pose(1:3,4,50); 0 0 0 1]); % translate the measurements to the origin
-    T2 = [roty(160)*rotz(-20)*roty(80), [0;0;0];0 0 0 1]; % apply a small rotation
+    T2 = [rot_y(160)*rot_z(-20)*rot_y(80), [0;0;0];0 0 0 1]; % apply a small rotation
     T3 = [eye(3), [-0.2;0;-0.3];0 0 0 1]; % apply a small translation
     T1 = [eye(3),measured_pose(1:3,4,50); 0 0 0 1];
     T_transform = T1*(T3*T2)*T1_inverse; % remark that a kind of 'similarity transformation' was used here

@@ -9,7 +9,7 @@ function [] = plot_reconstruction_results(pose_time,wrench_time,T_global,transfo
     end
 
     %% Transform the camera angle (for visualization)
-    R_visualization = rotx(90);
+    R_visualization = rot_x(90);
     T_visualization = [R_visualization,[0;0;0];0 0 0 1];
     P_visualization = [R_visualization,zeros(3,3);zeros(3,3),R_visualization];
     for k = 1:N
