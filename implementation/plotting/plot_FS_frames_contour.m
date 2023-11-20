@@ -5,7 +5,7 @@ figure('Name',['FS frames of ',datatype],'Color',[1 1 1],'NumberTitle','off'); h
 % number identifying the location and orientation of the force sensor {lc} and motion tracker {tr} on the tool
 sensor_id = configurations();
 
-R_visual = rotx(-135); % only for better visualization
+R_visual = rot_x(-135); % only for better visualization
 
 nb_rigid_bodies = 3;
 

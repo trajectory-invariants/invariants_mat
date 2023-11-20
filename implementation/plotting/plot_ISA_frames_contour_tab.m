@@ -8,9 +8,9 @@ view(38,15)
 sensor_id = configurations();
 
 if strcmp(application,'contour')
-    R_visual = rotx(-135); % only for better visualization
+    R_visual = rot_x(-135); % only for better visualization
 elseif strcmp(application,'peg')
-    R_visual = rotx(90) ;
+    R_visual = rot_x(90) ;
 end
 
 nb_rigid_bodies = 3;

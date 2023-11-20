@@ -86,7 +86,7 @@ for trial=trial_0:trial_n
     wrench_lc_lc_unq = wrench_lc_lc_raw(index_unq,:);
     
     % Rotate the world frame by -90 degrees around the X-axis so that the Z-axis is pointing upwards in vertical direction
-    R_w_wp = inv(rotx(-90));
+    R_w_wp = inv(rot_x(-90));
     T_w_wp = [R_w_wp,[0,0,0]';[0,0,0,1]];
     for j = 1 : size(T_tr_w_unq,3)
         T_tr_w_unq(:,:,j) = T_w_wp*T_tr_w_unq(:,:,j);

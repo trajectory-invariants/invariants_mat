@@ -24,10 +24,11 @@ T_isa = extend_homogeneous_matrix(T_isa);
 %% Plot 3D objects
 
 % Plot contour at correct position in world
-plot_contour_edges(position_tcp);
+path_to_stl_data = 'data/contour_following/stl/';
+plot_contour_object(position_tcp, path_to_stl_data);
 
 % Plot tool at correct position and orientation in world
-plot_stl_contour_tool(rotation_tcp, position_tcp, trial);
+plot_stl_contour_tool(rotation_tcp, position_tcp, trial, path_to_stl_data);
 
 
 %% Plot ISA frames and screw axes

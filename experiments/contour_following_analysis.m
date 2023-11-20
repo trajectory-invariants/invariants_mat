@@ -53,7 +53,7 @@ parameters_OCP.positive_obj_invariant = 0;
 parameters_OCP.positive_mov_invariant = 0;
 
 % Settings - plots
-settings_plots.plot_paper_figures = 1;                     % {0,1}
+settings_plots.plot_paper_figures = 0;                     % {0,1}
 settings_plots.plot_reference_results = 1;                 % {0,1}
 settings_plots.plot_summary_invariants = 1;                % {0,1}
 settings_plots.plot_all_trials_movingframes = 1;           % {0,1}

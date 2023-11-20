@@ -18,14 +18,14 @@ function [T_tcp_tr,T_tcp_lc,T_lc_tr,p_cog_lc] = configuration_properties_peg()
 
 %%
 % Rotation  {tcp} wrt {tr}
-R_tcp_tr = roty(180);
+R_tcp_tr = rot_y(180);
 % Position  {tcp} wrt {tr}
 p_tcp_tr = [0, -217.5, 45.5]./1000;
 % Pose      {tcp} wrt {lc}
 T_tcp_tr = [R_tcp_tr, p_tcp_tr'; 0 0 0 1];
 
 % Rotation  {tcp} wrt {lc}
-R_tcp_lc = rotz(45)*rotx(90); % {lc} towards {tcp} R1 * R2
+R_tcp_lc = rot_z(45)*rot_x(90); % {lc} towards {tcp} R1 * R2
 % Position  {tcp} wrt {lc}
 p_tcp_lc = [0.0,0.0,-170.5]./1000;
 % Pose      {tcp} wrt {lc}

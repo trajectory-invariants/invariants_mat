@@ -12,7 +12,7 @@ function plot_screw_invariants_summary(bool_reference_invariants,progress_ref,in
 %        parameterization          =
 
 % Pick the correct labels for the X- and Y-axis based on the given data type
-[label_x, label_y] = determine_axes_labels(datatype, parameterization);
+[label_x, label_y] = axes_labels_invariants(datatype, parameterization);
 
 % Initialize figure and its position/size
 figure1 = figure('Name',['screw invariants of ',datatype],'Color',[1 1 1],'NumberTitle','off');
