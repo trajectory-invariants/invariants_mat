@@ -1,6 +1,6 @@
 function plot_screw_invariants(progress,invars,datatype,parameterization,tab1)
 
-[label_x, label_y] = determine_axes_labels(datatype, parameterization);
+[label_x, label_y] = axes_labels_invariants(datatype, parameterization);
 
 axes('Parent',tab1);
 % figure1 = figure('Name',['screw invariants of ',datatype],'Color',[1 1 1]);
@@ -24,7 +24,7 @@ for k=1:2
             xlabel(label_x,'Interpreter','LaTex','FontSize',18,'Rotation',0,'HorizontalAlignment', 'left');
         end
         % y-label is put on top of the subfigure
-        title(label_y{3*(k-1)+l},'Interpreter','LaTex','FontSize',20,'Rotation',0,'HorizontalAlignment', 'center');
+        title(label_y{idx},'Interpreter','LaTex','FontSize',20,'Rotation',0,'HorizontalAlignment', 'center');
     end
 end
 
