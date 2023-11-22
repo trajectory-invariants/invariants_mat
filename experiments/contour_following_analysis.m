@@ -33,8 +33,8 @@ settings_analysis.wrench_synthetic = false; % replace real contact wrench with s
 settings_analysis.progress_choice = 'arclength'; % {time,arclength,arcangle}
 settings_analysis.N = 101; % number of samples in one trial
 % Choose trial_0 = trial_n = X, to only show results of trial X
-settings_analysis.trial_0 = 1; % number of first trial to consider {1-12}
-settings_analysis.trial_n = 2; % number of final trial to consider {1-12}
+settings_analysis.trial_0 = 5; % number of first trial to consider {1-12}
+settings_analysis.trial_n = 5; % number of final trial to consider {1-12}
 settings_analysis.velocity_translation_threshold = 0.05; % threshold on translational velocity [m/s]
 settings_analysis.velocity_rotation_threshold = 0.35; % threshold on rotational velocity [rad/s]
 settings_analysis.artificial_variations = true;
@@ -137,5 +137,9 @@ results.reference.pose = reference_data.pose;
 %% Plotting results %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 plot_all_results(results,settings_analysis,settings_plots)
+
+if settings_plots.plot_paper_figures
+    plot_special_paper_figures(results,settings_analysis,settings_plots);
+end
 
 save_results(results,settings_analysis,settings_plots)
