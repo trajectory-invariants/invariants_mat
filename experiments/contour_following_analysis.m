@@ -139,7 +139,8 @@ results.reference.pose = reference_data.pose;
 plot_all_results(results,settings_analysis,settings_plots)
 
 if settings_plots.plot_paper_figures
-    plot_special_paper_figures(results,settings_analysis,settings_plots);
+    % settings_analysis.trial_n must be higher than 5
+    plot_special_paper_figures(results,settings_analysis);
 end
 
 save_results(results,settings_analysis,settings_plots)

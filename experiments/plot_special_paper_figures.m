@@ -1,11 +1,12 @@
-function plot_special_paper_figures(results,settings_analysis,settings_plots)
+function plot_special_paper_figures(results,settings_analysis)
 
 % Figure 10a
-if strcmp(application,'contour') && strcmp(trajectory_type,'motion') && strcmp(viewpoint,'world') && strcmp(referencepoint,'tracker') && trial_0 == 1 && nb_trials == 12
-    trial = 5;
+if strcmp(settings_analysis.application,'contour') && strcmp(settings_analysis.trajectory_type,'pose') && strcmp(settings_analysis.ref_point_motion,'tracker') && settings_analysis.trial_n >= 5
+    trial_nb = 5;
+    trial = trial_nb-settings_analysis.trial_0+1;
     T_isa = results.trials(trial).moving_frames;
     pose_tcp = results.trials(trial).pose;
-    plot_figure10a(T_isa,pose_tcp,trial,'motion (Fig. 10a)');
+    plot_figure10a(T_isa,pose_tcp,trial)%,'motion (Fig. 10a)');
     %exportgraphics(gcf,['figures/ISA_frames_',datatype,'_',viewpoint,'_',referencepoint,'_trial_',num2str(trial+trial_0-1),'.pdf'],'ContentType','vector');
 end
 

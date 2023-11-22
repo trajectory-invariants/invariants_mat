@@ -30,9 +30,7 @@ plot_contour_object(position_tcp, path_to_stl_data);
 % Plot tool at correct position and orientation in world
 plot_stl_contour_tool(rotation_tcp, position_tcp, trial, path_to_stl_data);
 
-
 %% Plot ISA frames and screw axes
-
 
 % Plot ISA frames
 arrow_length_isa = 0.1;
