@@ -4,7 +4,7 @@ path_to_data_folder = './data/';
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%% Settings %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %%
 
-application = 'peg'; % {contour, peg}
+application = 'contour'; % {contour, peg}
 trajectory_type = 'motion'; % {motion, wrench}
 viewpoint = 'world'; % {world, body}
 referencepoint = 'tracker'; % {tracker, tool_point, force_sensor, middle_contour}
@@ -56,8 +56,8 @@ bool_paper_plots = 0;                       % {0,1}
 
 % Parameters of input data
 N = 101;
-trial_0 = 1; % {1-12}
-trial_n = 12; % {1-12}
+trial_0 = 5; % {1-12}
+trial_n = 5; % {1-12}
 
 %% Load data %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
