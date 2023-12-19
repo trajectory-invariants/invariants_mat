@@ -27,14 +27,14 @@ addpath(genpath('./experiments_code/'));
 
 % Settings - analysis
 settings_analysis.trajectory_type = 'pose'; % {pose,rotation,position,wrench,force,moment}
-settings_analysis.ref_point_motion = 'tracker'; % {tracker, tool_point}
+settings_analysis.ref_point_motion = 'tool_point'; % {tracker, tool_point}
 settings_analysis.ref_frame_force = 'tracker'; % {tracker, tool_point, under_contour}
 settings_analysis.wrench_synthetic = false; % replace real contact wrench with synthetic data
 settings_analysis.progress_choice = 'arclength'; % {time,arclength,arcangle}
 settings_analysis.N = 101; % number of samples in one trial
 % Choose trial_0 = trial_n = X, to only show results of trial X
-settings_analysis.trial_0 = 1; % number of first trial to consider {1-12}
-settings_analysis.trial_n = 2; % number of final trial to consider {1-12}
+settings_analysis.trial_0 = 5; % number of first trial to consider {1-12}
+settings_analysis.trial_n = 6; % number of final trial to consider {1-12}
 settings_analysis.velocity_translation_threshold = 0.05; % threshold on translational velocity [m/s]
 settings_analysis.velocity_rotation_threshold = 0.35; % threshold on rotational velocity [rad/s]
 settings_analysis.artificial_variations = true;
@@ -112,7 +112,7 @@ for trial=1:nb_trials
     results.trials(trial).invariants = OCP_results.invariants;
     results.trials(trial).reconstructed_trajectory = OCP_results.reconstruction;
     results.trials(trial).moving_frames = OCP_results.moving_frames;
-    results.trials(trial).pose = measurement_data{trial}.pose;
+    results.trials(trial).pose_tcp = measurement_data{trial}.pose_tcp;
 end
 
 %% Calculate invariants of reference trial using optimal control (OCP) %%%%
@@ -137,5 +137,10 @@ results.reference.pose = reference_data.pose;
 %% Plotting results %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 plot_all_results(results,settings_analysis,settings_plots)
+
+if settings_plots.plot_paper_figures
+    % settings_analysis.trial_n must be higher than 5
+    plot_special_paper_figures(results,settings_analysis);
+end
 
 save_results(results,settings_analysis,settings_plots)

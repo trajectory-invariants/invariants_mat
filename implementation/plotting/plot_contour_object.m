@@ -22,7 +22,7 @@ TRANSLATION = (average_position_tcp' - ROTATION*average_contour_edge')';
 
 % Plot the contour object based on stl file
 contour_color = [200 200 200]/255;
-plot_stl([path_to_stl_data,'contour.STL'],ROTATION,TRANSLATION,0.001,contour_color,0.5)
+plot_stl([path_to_stl_data,'contour.STL'],ROTATION,TRANSLATION,0.001,contour_color,0.4)
 
 % Load contour edge coordinates
 p_o_orig = load([path_to_stl_data,'contour_edge_o']).p_o_orig;

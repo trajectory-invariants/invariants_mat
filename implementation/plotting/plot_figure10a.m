@@ -1,12 +1,12 @@
-function plot_ISA_frames_tab(T_isa, pose_tcp, trial, tab1)
+function plot_figure10a(T_isa, pose_tcp,trial)
 
 % Plot settings
-axes(tab1); hold on;
-view_fig = [-50,10];
-axis_font_size = 12;
-label_font_size = 18;
+datatype = 'motion';
+view_fig = [175,16];
+axis_font_size = 24;
+label_font_size = 29;
+figure('Name',['ISA frames of ',datatype],'Color',[1 1 1],'NumberTitle','off'); hold on; axis equal;
 set(groot,'defaultAxesTickLabelInterpreter','latex');
-view(view_fig);
 
 % Colors
 darkred = [0.6350 0.0780 0.1840];
@@ -29,11 +29,12 @@ plot_contour_object(position_tcp, path_to_stl_data);
 
 % Plot tool at correct position and orientation in world
 plot_stl_contour_tool(rotation_tcp, position_tcp, trial, path_to_stl_data);
+view(1,2); axis equal;
 
 %% Plot ISA frames and screw axes
 
 % Plot ISA frames
-arrow_length_isa = 0.1;
+arrow_length_isa = 0.1*1.2;
 arrow_length_normal_binormal = 0.05;
 arrow_width_isa = 0.0015;
 arrow_width_normal_binormal = 0.00075;
@@ -41,7 +42,7 @@ steps_isa = 2;
 plot_isa_frames(T_isa,arrow_length_isa,arrow_length_normal_binormal,arrow_width_isa,arrow_width_normal_binormal,steps_isa,darkred,green,blue)
 
 % Plot ISA axes
-length_screw_back = 0.15;
+length_screw_back = 0.15*0.5;
 length_screw_front = 0.15;
 width_axis = 0.5;
 plots_screw_axes(T_isa,length_screw_back,length_screw_front,grey,width_axis,steps_isa);
@@ -54,5 +55,3 @@ axis equal; view(view_fig); grid on; box on;
 xlabel('$x\ [\mathrm{m}]$','Interpreter','LaTex','FontSize',label_font_size)
 ylabel('$y\ [\mathrm{m}]$','Interpreter','LaTex','FontSize',label_font_size)
 zlabel('$z\ [\mathrm{m}]$','Interpreter','LaTex','FontSize',label_font_size)
-
-end

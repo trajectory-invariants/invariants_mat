@@ -69,13 +69,4 @@ linkaxes(subplots([5 6]),'y')
 linkaxes(subplots([2 3]),'off')
 linkaxes(subplots([5 6]),'off')
 
-if strcmp(datatype,'wrench') && strcmp(viewpoint,'body') && strcmp(wrenchtype,'real')
-    subplot(2,3,5); ylim([-0.2,0.2]); subplot(2,3,6); ylim([-0.1,0.1]);
-    exportgraphics(gcf,['figures/screw_invariants_',datatype,'_',viewpoint,'_',referencepoint,'.pdf'],'ContentType','vector');
-end
-if strcmp(datatype,'wrench') && strcmp(wrenchtype,'synthetic')
-    subplot(2,3,1); ylim([-1,35]); subplot(2,3,2); ylim([-5,5]); %subplot(2,3,3); ylim([-5,5])
-    exportgraphics(gcf,['figures/screw_invariants_',datatype,'_',viewpoint,'_',referencepoint,'_',wrenchtype,'.pdf'],'ContentType','vector');
-end
-
 end

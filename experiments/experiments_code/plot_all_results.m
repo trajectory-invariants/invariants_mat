@@ -65,79 +65,30 @@ if settings_plots.plot_all_trials_movingframes
 
     for trial=1:nb_trials
         T_isa = results.trials(trial).moving_frames;
-        pose_tcp = results.trials(trial).pose;
+        pose_tcp = results.trials(trial).pose_tcp;
         thistab = uitab(tabgroup_data_ISA,'Title',['trial = ',num2str(trial+trial_0-1)]);
         plot_ISA_frames_tab(T_isa,pose_tcp,trial+trial_0-1,thistab)
     end
 
+
     if bool_plot_reference
         thistab = uitab(tabgroup_data_ISA,'Title','reference');
-        plot_ISA_frames_tab(T_isa_data_ref,pose_ref,trial+trial_0-1,thistab)
+        plot_ISA_frames_tab(T_isa_data_ref,pose_ref,0,thistab)
     end
+
 
 end
 
 %% Plot invariants - summary
 if settings_plots.plot_summary_invariants
     plot_screw_invariants_summary(bool_plot_reference,progress_ref,invars_data_ref,progress_all,invariants_all,datatype,parameterization)
+
+    if strcmp(datatype,'wrench') && strcmp(viewpoint,'body') && strcmp(wrenchtype,'real')
+        subplot(2,3,5); ylim([-0.2,0.2]); subplot(2,3,6); ylim([-0.1,0.1]);
+        exportgraphics(gcf,['figures/screw_invariants_',datatype,'_',viewpoint,'_',referencepoint,'.pdf'],'ContentType','vector');
+    end
+    if strcmp(datatype,'wrench') && strcmp(wrenchtype,'synthetic')
+        subplot(2,3,1); ylim([-1,35]); subplot(2,3,2); ylim([-5,5]); %subplot(2,3,3); ylim([-5,5])
+        exportgraphics(gcf,['figures/screw_invariants_',datatype,'_',viewpoint,'_',referencepoint,'_',wrenchtype,'.pdf'],'ContentType','vector');
+    end
 end
-
-
-% %% Special figures for the paper
-% if bool_paper_plots
-% 
-%     % Figure 10a
-%     if strcmp(application,'contour') && strcmp(trajectory_type,'motion') && strcmp(viewpoint,'world') && strcmp(referencepoint,'tracker') && trial_0 == 1 && nb_trials == 12
-%         trial = 5;
-%         view_fig = [175,16];
-%         axis_font_size = 24;
-%         label_font_size = 29;
-%         step_size = 2;
-%         plot_figure10(T_isa_data(:,:,:,trial),pose(:,:,:,trial),trial+trial_0-1,viewpoint,referencepoint,'motion (Fig. 9a)',parameterization,application,view_fig,axis_font_size,label_font_size,step_size,wrenchtype)
-%         exportgraphics(gcf,['figures/ISA_frames_',datatype,'_',viewpoint,'_',referencepoint,'_trial_',num2str(trial+trial_0-1),'.pdf'],'ContentType','vector');
-%     end
-% 
-%     % Figure 10b
-%     if strcmp(application,'contour') && strcmp(trajectory_type,'wrench') && strcmp(viewpoint,'body') && strcmp(referencepoint,'tracker') && trial_0 == 1 && nb_trials == 12
-%         trial = 5;
-%         view_fig = [-110,10];
-%         axis_font_size = 17;
-%         label_font_size = 22;
-%         step_size = 10;
-%         plot_figure10(T_isa_data(:,:,:,trial),pose(:,:,:,trial),trial+trial_0-1,viewpoint,referencepoint,'wrench (Fig. 9c)',parameterization,application,view_fig,axis_font_size,label_font_size,step_size,wrenchtype)
-%         exportgraphics(gcf,['figures/ISA_frames_',datatype,'_',viewpoint,'_',referencepoint,'_trial_',num2str(trial+trial_0-1),'.pdf'],'ContentType','vector');
-%     end
-% 
-%     % Figure 10d
-%     if strcmp(application,'contour') && strcmp(trajectory_type,'wrench') && strcmp(viewpoint,'world') && strcmp(referencepoint,'force_sensor') && trial_0 == 1 && nb_trials == 12
-%         trial = 5;
-%         view_fig = [170,22];
-%         axis_font_size = 34;
-%         label_font_size = 40;
-%         step_size = 3;
-%         plot_figure10(T_isa_data(:,:,:,trial),pose(:,:,:,trial),trial+trial_0-1,viewpoint,referencepoint,'wrench (Fig. 9b)',parameterization,application,view_fig,axis_font_size,label_font_size,step_size,wrenchtype)
-%         axis equal;
-%         exportgraphics(gcf,['figures/ISA_frames_',datatype,'_',viewpoint,'_',referencepoint,'_trial_',num2str(trial+trial_0-1),'.pdf'],'ContentType','vector');
-%     end
-% 
-%     % Figure 14a
-%     if strcmp(application,'peg') && strcmp(trajectory_type,'motion') && strcmp(viewpoint,'world') && strcmp(referencepoint,'tracker') && trial_0 == 1 && nb_trials == 12
-%         trial = 1;
-%         view_angles = [-100,20];
-%         plot_figure14(T_isa_data(:,:,:,trial), pose(:,:,:,trial), trial, referencepoint,view_angles)
-%         exportgraphics(gcf,['figures/ISA_frames_',datatype,'_',viewpoint,'_',referencepoint,'_trial_',num2str(trial),'_peg.pdf'],'ContentType','vector');
-%     end
-% 
-%     % Figure 14b
-%     if strcmp(application,'peg') && strcmp(trajectory_type,'wrench') && strcmp(viewpoint,'world') && strcmp(referencepoint,'force_sensor') && trial_0 == 1 && nb_trials == 12
-%         trial = 1;
-%         view_angles = [-100,20];
-%         plot_figure14(T_isa_data(:,:,:,trial), pose(:,:,:,trial), trial, referencepoint,view_angles)
-%         exportgraphics(gcf,['figures/ISA_frames_',datatype,'_',viewpoint,'_',referencepoint,'_trial_',num2str(trial),'_peg.pdf'],'ContentType','vector');
-%         trial = 12;
-%         view_angles = [166,20];
-%         plot_figure14(T_isa_data(:,:,:,trial), pose(:,:,:,trial), trial, referencepoint,view_angles)
-%         exportgraphics(gcf,['figures/ISA_frames_',datatype,'_',viewpoint,'_',referencepoint,'_trial_',num2str(trial),'_peg.pdf'],'ContentType','vector');
-%     end
-% end
-% 

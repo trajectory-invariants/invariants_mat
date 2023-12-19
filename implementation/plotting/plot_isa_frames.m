@@ -12,4 +12,4 @@ for i=1:steps_isa:N
     mArrow3(p_isa(i,:),p_isa(i,:)+arrow_length_normal_binormal*z_isa(i,:),'color',blue,'stemWidth',arrow_width_normal_binormal);
 end
 
-plot3(p_isa(:,1),p_isa(:,2),p_isa(:,3),'k')
+plot3(p_isa(:,1),p_isa(:,2),p_isa(:,3),'k','linewidth',2)

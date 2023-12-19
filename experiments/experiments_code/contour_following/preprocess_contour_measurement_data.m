@@ -106,4 +106,5 @@ for trial=trial_0:trial_n
     data_preprocessed{trial_nb}.force = -wrench(:,1:3);
     data_preprocessed{trial_nb}.moment = -wrench(:,4:6);
     data_preprocessed{trial_nb}.vel_prof = vel_profile';
+    data_preprocessed{trial_nb}.pose_tcp = T_reparam;
 end
