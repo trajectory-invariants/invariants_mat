@@ -65,15 +65,17 @@ if settings_plots.plot_all_trials_movingframes
 
     for trial=1:nb_trials
         T_isa = results.trials(trial).moving_frames;
-        pose_tcp = results.trials(trial).pose;
+        pose_tcp = results.trials(trial).pose_tcp;
         thistab = uitab(tabgroup_data_ISA,'Title',['trial = ',num2str(trial+trial_0-1)]);
         plot_ISA_frames_tab(T_isa,pose_tcp,trial+trial_0-1,thistab)
     end
 
+
     if bool_plot_reference
         thistab = uitab(tabgroup_data_ISA,'Title','reference');
-        plot_ISA_frames_tab(T_isa_data_ref,pose_ref,trial+trial_0-1,thistab)
+        plot_ISA_frames_tab(T_isa_data_ref,pose_ref,0,thistab)
     end
+
 
 end
 

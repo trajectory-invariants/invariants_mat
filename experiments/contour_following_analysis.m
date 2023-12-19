@@ -27,7 +27,7 @@ addpath(genpath('./experiments_code/'));
 
 % Settings - analysis
 settings_analysis.trajectory_type = 'pose'; % {pose,rotation,position,wrench,force,moment}
-settings_analysis.ref_point_motion = 'tracker'; % {tracker, tool_point}
+settings_analysis.ref_point_motion = 'tool_point'; % {tracker, tool_point}
 settings_analysis.ref_frame_force = 'tracker'; % {tracker, tool_point, under_contour}
 settings_analysis.wrench_synthetic = false; % replace real contact wrench with synthetic data
 settings_analysis.progress_choice = 'arclength'; % {time,arclength,arcangle}
@@ -112,7 +112,7 @@ for trial=1:nb_trials
     results.trials(trial).invariants = OCP_results.invariants;
     results.trials(trial).reconstructed_trajectory = OCP_results.reconstruction;
     results.trials(trial).moving_frames = OCP_results.moving_frames;
-    results.trials(trial).pose = measurement_data{trial}.pose;
+    results.trials(trial).pose_tcp = measurement_data{trial}.pose_tcp;
 end
 
 %% Calculate invariants of reference trial using optimal control (OCP) %%%%

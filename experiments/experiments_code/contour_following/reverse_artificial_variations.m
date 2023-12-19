@@ -88,6 +88,8 @@ elseif trial == 12
     for j = 1 : N
         T_o2_o1_new(:,:,j)  = inverse_pose([R_artificial,p_artificial;0 0 0 1])*T_o2_o1_init(:,:,j);
     end
+else
+    T_o2_o1_new = T_o2_o1_init;
 end
 
 p_o2_o1_new         = squeeze(T_o2_o1_new(1:3,4,:))';
