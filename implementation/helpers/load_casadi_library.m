@@ -12,7 +12,8 @@ if ismac
 elseif isunix
     foldername = 'casadi-3.6.3-linux64-matlab2018b';
 elseif ispc
-    foldername = 'casadi-3.6.3-windows64-matlab2018b';
+    % foldername = 'casadi-3.6.3-windows64-matlab2018b';
+    foldername = 'casadi-windows-matlabR2016a-v3.5.5';
 else
     error('Your Operating System does not support Casadi, check https://web.casadi.org/get/')
 end

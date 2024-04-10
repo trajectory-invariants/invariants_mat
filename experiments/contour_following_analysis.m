@@ -34,7 +34,7 @@ settings_analysis.progress_choice = 'arclength'; % {time,arclength,arcangle}
 settings_analysis.N = 101; % number of samples in one trial
 % Choose trial_0 = trial_n = X, to only show results of trial X
 settings_analysis.trial_0 = 5; % number of first trial to consider {1-12}
-settings_analysis.trial_n = 6; % number of final trial to consider {1-12}
+settings_analysis.trial_n = 5; % number of final trial to consider {1-12}
 settings_analysis.velocity_translation_threshold = 0.05; % threshold on translational velocity [m/s]
 settings_analysis.velocity_rotation_threshold = 0.35; % threshold on rotational velocity [rad/s]
 settings_analysis.artificial_variations = true;
@@ -134,8 +134,7 @@ results.reference.reconstructed_trajectory = OCP_results.reconstruction;
 results.reference.moving_frames = OCP_results.moving_frames;
 results.reference.pose = reference_data.pose;
 
-%% Plotting results %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+%% Plotting results %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 plot_all_results(results,settings_analysis,settings_plots)
 
 if settings_plots.plot_paper_figures
@@ -144,3 +143,8 @@ if settings_plots.plot_paper_figures
 end
 
 save_results(results,settings_analysis,settings_plots)
+
+save_movie = false;
+if save_movie
+    movie_moving_frame(results, settings_analysis)
+end
