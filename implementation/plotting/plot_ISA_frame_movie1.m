@@ -118,6 +118,10 @@ if strcmp(viewpoint,'world')
     screw_start = p_isa(index,:) - x_isa(index,:)*length_screw*0.5;
     screw_end = p_isa(index,:) + x_isa(index,:)*length_screw*0.8;
     plot3([screw_start(1) screw_end(1)],[screw_start(2) screw_end(2)],[screw_start(3) screw_end(3)],'Color','r','LineWidth',2)
+    
+    % Plot trajectory origin ISA
+    plot3(p_isa(1:index,1),p_isa(1:index,2),p_isa(1:index,3),'k:','LineWidth',1.7)
+    hold on;
 
 
     arrow_length_isa = 0.06;
