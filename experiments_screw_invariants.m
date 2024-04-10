@@ -4,10 +4,10 @@ path_to_data_folder = './data/';
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%% Settings %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %%
 
-application = 'peg'; % {contour, peg}
-trajectory_type = 'motion'; % {motion, wrench}
+application = 'contour'; % {contour, peg}
+trajectory_type = 'wrench'; % {motion, wrench}
 viewpoint = 'world'; % {world, body}
-referencepoint = 'tracker'; % {tracker, tool_point, force_sensor, middle_contour}
+referencepoint = 'force_sensor'; % {tracker, tool_point, force_sensor, middle_contour}
 wrenchtype = 'real'; % {real, synthetic}
 
 % Supported combinations in:
@@ -56,8 +56,8 @@ bool_paper_plots = 0;                       % {0,1}
 
 % Parameters of input data
 N = 101;
-trial_0 = 1; % {1-12}
-trial_n = 12; % {1-12}
+trial_0 = 5; % {1-12}
+trial_n = 5; % {1-12}
 
 %% Load data %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -254,6 +254,56 @@ if bool_force
     plot_all_results_screw('wrench',bool_reference_invariants,bool_visualize_trials,bool_visualize_reconstruction_errors,bool_visualize_summary,bool_paper_plots,...
         progress_ref,invars_wrench_ref,T_isa_wrench_ref,wrench_ref,viewpoint,referencepoint,parameterization,application,...
         recons_wrench_ref,nb_trials,progress,invars_wrench,T_isa_wrench,wrench,trial_0,recons_wrench,pose,pose_ref,trajectory_type,wrenchtype,path_to_data_folder)
+    
+    %% Generate movie
+    for trial=1:nb_trials
+        
+        disp(['Generating movie ' num2str(trial) '/' num2str(nb_trials) ' ...']);
+        fig = figure()
+        axis_font_size = 12;
+        label_font_size = 18;
+        set(groot,'defaultAxesTickLabelInterpreter','latex');
+
+        set(gcf, 'Position', get(0, 'Screensize'));
+        T_isa_trial = T_isa_wrench(:,:,:,trial);
+        N = size(T_isa_trial,3);
+        step_size = h;
+        
+        for k = 1:N
+       
+            clf
+        
+            subplot(1,20,[1 2 3 4 5 6 7 8]);
+            view_fig = [105,30];
+            plot_ISA_frame_movie1(T_isa_wrench(:,:,:,trial),pose(:,:,:,trial),trial+trial_0-1,viewpoint,referencepoint,'wrench (Fig. 9b)',parameterization,application,view_fig,axis_font_size,label_font_size,step_size,wrenchtype,k)
+            xlim([-0.4 0.2])
+            ylim([1.4 1.6])
+            zlim([-1.05 -0.8])
+
+            subplot(1,20,[12 13 14 15 16 17 18 19 20]);
+            view_fig = [105,30];
+            plot_ISA_frame_movie2(T_isa_wrench(:,:,:,trial),pose(:,:,:,trial),trial+trial_0-1,viewpoint,referencepoint,'wrench (Fig. 9b)',parameterization,application,view_fig,axis_font_size,label_font_size,step_size,wrenchtype,k)
+            xlim([-0.4 0.2])
+            ylim([1.4 1.6])
+            zlim([-1.05 -0.8])
+
+            MovieFrames(k) = getframe(fig, [2 2 1535 791]);  
+            pause(0.1)
+            100;
+            
+        end
+        
+        name = '../Output/video_mf_wrench';
+
+        Writer = VideoWriter(name);
+        Writer.FrameRate = 10;
+
+        % Open the VideoWriter object, write the movie and close the file
+        open(Writer);
+        writeVideo(Writer,MovieFrames);
+        close(Writer);
+    end
+    
 end
 
 
