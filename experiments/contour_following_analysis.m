@@ -144,7 +144,7 @@ end
 
 save_results(results,settings_analysis,settings_plots)
 
-save_movie = false;
+save_movie = true;
 if save_movie
     movie_moving_frame(results, settings_analysis)
 end

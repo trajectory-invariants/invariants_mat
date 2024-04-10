@@ -34,17 +34,22 @@ hold on;
 % Plot ISA frames
 arrow_length_isa = 0.1;
 arrow_length_normal_binormal = 0.05;
-arrow_width_isa = 0.0015;
-arrow_width_normal_binormal = 0.00075;
+arrow_width_isa = 0.0025;
+arrow_width_normal_binormal = 0.0015;
 steps_isa = 2;
-plot_isa_frame_movie(T_isa,arrow_length_isa,arrow_length_normal_binormal,arrow_width_isa,arrow_width_normal_binormal,steps_isa,darkred,green,blue)
+plot_isa_frame_movie(T_isa(:,:,index),arrow_length_isa,arrow_length_normal_binormal,arrow_width_isa,arrow_width_normal_binormal,steps_isa,darkred,green,blue)
 hold on;
 
 % Plot ISA axes
 length_screw_back = 0.15;
 length_screw_front = 0.15;
 width_axis = 1;
-plots_screw_axes_movie(T_isa,length_screw_back,length_screw_front,grey,width_axis,steps_isa);
+plots_screw_axes_movie(T_isa(:,:,index),length_screw_back,length_screw_front,grey,width_axis,steps_isa);
+hold on;
+
+% Plot trajectory origin ISA
+pos_isa = squeeze(T_isa(1:3,4,:));
+plot3(pos_isa(1,1:index),pos_isa(2,1:index),pos_isa(3,1:index),'k:','LineWidth',1.5)
 hold on;
 
 %% Plot styling
