@@ -280,14 +280,15 @@ if bool_force
             ylim([1.4 1.6])
             zlim([-1.05 -0.8])
 
-            subplot(1,20,[12 13 14 15 16 17 18 19 20]);
-            view_fig = [105,30];
-            plot_ISA_frame_movie2(T_isa_wrench(:,:,:,trial),pose(:,:,:,trial),trial+trial_0-1,viewpoint,referencepoint,'wrench (Fig. 9b)',parameterization,application,view_fig,axis_font_size,label_font_size,step_size,wrenchtype,k)
-            xlim([-0.4 0.2])
-            ylim([1.4 1.6])
-            zlim([-1.05 -0.8])
+            
+            % subplot(1,20,[12 13 14 15 16 17 18 19 20]);
+            % view_fig = [105,30];
+            % plot_ISA_frame_movie2(T_isa_wrench(:,:,:,trial),pose(:,:,:,trial),trial+trial_0-1,viewpoint,referencepoint,'wrench (Fig. 9b)',parameterization,application,view_fig,axis_font_size,label_font_size,step_size,wrenchtype,k)
+            % xlim([-0.4 0.2])
+            % ylim([1.4 1.6])
+            % zlim([-1.05 -0.8])
 
-            MovieFrames(k) = getframe(fig, [2 2 1535 791]);  
+            MovieFrames(k) = getframe(fig, [2 2 1535 1000]);  
             pause(0.1)
             100;
             

@@ -58,15 +58,15 @@ if strcmp(viewpoint,'world')
         material dull
         hold on
 
-%         % Plot stl files in correct position and orientation
-%         if ~strcmp(trial,'ref') % not the reference case
-%             plot_stl(['data/stl/contour/configuration-a/tool-a-bearings.STL'],rotation_tcp(:,:,index),position_tcp(index,:),0.001,bearings_color,1);
-%             material dull
-%             hold on
-%             plot_stl(['data/stl/contour/configuration-a/tool-a-print4.STL'],rotation_tcp(:,:,index),position_tcp(index,:),0.001,part4_color,0.3);
-%             material dull
-%             hold on
-%         end
+        % Plot stl files in correct position and orientation
+        if ~strcmp(trial,'ref') % not the reference case
+            plot_stl(['data/stl/contour/configuration-a/tool-a-bearings.STL'],rotation_tcp(:,:,index),position_tcp(index,:),0.001,bearings_color,1);
+            material dull
+            hold on
+            plot_stl(['data/stl/contour/configuration-a/tool-a-print4.STL'],rotation_tcp(:,:,index),position_tcp(index,:),0.001,part4_color,1);
+            material dull
+            hold on
+        end
     elseif strcmp(application,'peg')
         ROTATION = position_tcp(end,:);
         TRANSLATION = eye(3);
@@ -126,7 +126,7 @@ if strcmp(viewpoint,'world')
 
     arrow_length_isa = 0.06;
     arrow_width_isa = 0.002;
-    mArrow3(p_isa(index,:),p_isa(index,:)+arrow_length_isa*x_isa(index,:)*1.1,'color','r','stemWidth',arrow_width_isa*1.1);
+    mArrow3(p_isa(index,:),p_isa(index,:)-arrow_length_isa*x_isa(index,:)*1.1,'color','r','stemWidth',arrow_width_isa*1.1);
     material dull
     hold on
     mArrow3(p_isa(index,:),p_isa(index,:)+arrow_length_isa*y_isa(index,:)*0.7,'color','g','stemWidth',arrow_width_isa*0.8);
