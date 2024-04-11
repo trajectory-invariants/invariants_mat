@@ -265,6 +265,7 @@ if bool_force
         set(groot,'defaultAxesTickLabelInterpreter','latex');
 
         set(gcf, 'Position', get(0, 'Screensize'));
+        set(gcf,'color','w');
         T_isa_trial = T_isa_wrench(:,:,:,trial);
         N = size(T_isa_trial,3);
         step_size = h;
