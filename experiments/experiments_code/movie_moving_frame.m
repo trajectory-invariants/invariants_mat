@@ -8,6 +8,7 @@ nb_trials = settings_analysis.trial_n - settings_analysis.trial_0 + 1; % number 
 %% Generate movie moving frame
 fig = figure();
 set(gcf, 'Position', get(0, 'Screensize'));
+set(gcf,'color','w');
 hold on;
 
 for trial=1:nb_trials
@@ -20,12 +21,12 @@ for trial=1:nb_trials
         clf
         
         subplot(1,10,[1 2 3 5]);
-        plot_ISA_frame(T_isa,pose_tcp,trial+trial_0-1,k,[120,15])
+        plot_ISA_frame(T_isa,pose_tcp,trial+trial_0-1,k,[150,15])
         
-        subplot(1,10,[7 8 9]);
-        plot_ISA_frame(T_isa,pose_tcp,trial+trial_0-1,k,[90,90])
+        %subplot(1,10,[7 8 9]);
+        %plot_ISA_frame(T_isa,pose_tcp,trial+trial_0-1,k,[90,90])
         
-        MovieFrames(k) = getframe(fig, [2 2 1535 791]);  
+        MovieFrames(k) = getframe(fig, [2 2 1535 1000]);  
         pause(0.1)
         
     end
