@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://trajectory-invariants.github.io/images/logo-trajectory-invariants.png" alt="Logo Trajectory Invariants" title="Title text" width="750">
+</p>
+
 Matlab code to support the robust calculation of invariant trajectory descriptors using optimal control. 
 
 ## Features
