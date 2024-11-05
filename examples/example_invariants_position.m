@@ -86,7 +86,8 @@ ocp_trajectory = optim_class_result.Obj_location;
 ocp_movingframes = optim_class_result.FS_frames;
 
 % plot results
-plot_vector_invariants(arclength,ocp_invariants,'position')
+tab = figure;
+plot_vector_invariants(arclength,ocp_invariants,'position','dimless_arclength',tab)
 
 figure; hold on;
 plot3(trajectory(:,1),trajectory(:,2),trajectory(:,3),'b')
